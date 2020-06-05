@@ -6,11 +6,13 @@ import com.swizzle.tomes.QuestTypes.Slayer;
 import com.swizzle.tomes.enums.QuestType;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,9 +30,6 @@ public class TomeObject {
     public static ItemStack giveBook(String title){
         ItemStack tome = new ItemStack(Material.BOOK);
 
-        ItemMeta tomeMeta = tome.getItemMeta();
-
-        ArrayList<String> tomeLore = new ArrayList<>();
         IQuest questType = chooseRandomQuest();
 
 //        String loreText = "";
@@ -44,23 +43,23 @@ public class TomeObject {
 //                break;
 //        }
 
-        tomeLore.add(questType.getQuestName());
-        tomeLore.add("----------");
 //        tomeLore.add(loreText);
 //        tomeMeta.setLore(tomeLore);
 
+        //Applying unique quest data
         if (questType instanceof Mine){
             System.out.println("Its a mine book");
         } else if (questType instanceof Slayer){
-            NamespacedKey questGoalKey = new NamespacedKey(Tomes.getInstance(), "Goal");
-            NamespacedKey questCurrentKey = new NamespacedKey(Tomes.getInstance(), "Current");
+            System.out.println("Its a slayer book");
 
-            tomeMeta.getPersistentDataContainer().set(questGoalKey, PersistentDataType.INTEGER, 3);
-            tomeMeta.getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, 0);
+            Slayer slayer = new Slayer();
 
-            tomeLore.add(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER).toString() + "/" + tomeMeta.getPersistentDataContainer().get(questGoalKey, PersistentDataType.INTEGER).toString());
+            ItemStack book = slayer.applyQuest(tome,  3);
+
         }
-        tomeMeta.setLore(tomeLore);
+
+        //Data that is common between all books
+        ItemMeta tomeMeta = tome.getItemMeta();
 
         tomeMeta.setDisplayName(title);
 

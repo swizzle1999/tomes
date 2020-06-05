@@ -1,7 +1,7 @@
 package com.swizzle.tomes.QuestTypes;
 
-public interface IQuest<T> {
-    public String getQuestName();
+import org.bukkit.inventory.ItemStack;
 
-    public void parseIntoObject(T object);
+public interface IQuest {
+    public String getQuestName();
 }

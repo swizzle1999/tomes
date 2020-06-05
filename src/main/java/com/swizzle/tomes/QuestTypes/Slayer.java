@@ -48,7 +48,7 @@ public class Slayer implements IQuest {
 
         tomeMeta.getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
         tomeMeta.getPersistentDataContainer().set(questGoalKey, PersistentDataType.INTEGER, this.targetMobCount);
-        tomeMeta.getPersistentDataContainer().set(questTargetEntity, PersistentDataType.STRING, EntityType.ZOMBIE.toString());
+        tomeMeta.getPersistentDataContainer().set(questTargetEntity, PersistentDataType.STRING, this.entityType.toString());
 
         List<String> loreTextArray = tomeMeta.getLore();
 
@@ -75,14 +75,14 @@ public class Slayer implements IQuest {
 
         tomeMeta.getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
         tomeMeta.getPersistentDataContainer().set(questGoalKey, PersistentDataType.INTEGER, this.targetMobCount);
-        tomeMeta.getPersistentDataContainer().set(questTargetEntity, PersistentDataType.STRING, EntityType.ZOMBIE.toString());
+        tomeMeta.getPersistentDataContainer().set(questTargetEntity, PersistentDataType.STRING, this.entityType.toString());
 
         List<String> tomeLore = tomeMeta.getLore();
 
         for(int i = 0; i < tomeLore.size(); i++){
             String[] splitLine = tomeLore.get(i).split(" ");
             if (splitLine[0].equalsIgnoreCase(questName)){
-                tomeLore.set(i, questName + " | " + tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER).toString() + "/" + tomeMeta.getPersistentDataContainer().get(questGoalKey, PersistentDataType.INTEGER).toString() + " Killed");
+                tomeLore.set(i, questName + " | " + tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER).toString() + "/" + tomeMeta.getPersistentDataContainer().get(questGoalKey, PersistentDataType.INTEGER).toString() + " " + this.entityType.toString().toLowerCase() + "(s)" + " Killed");
                 break;
             }
         }

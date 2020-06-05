@@ -67,9 +67,15 @@ public class TomeQuestProgressEvent implements Listener {
 
                     Slayer slayer = new Slayer();
                     slayer.parseIntoObject(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER), EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
-                    slayer.incrementCurrentMobCount(1);
 
-                    slayer.updateQuestData(item);
+                    System.out.println(e.getEntityType());
+                    System.out.println(slayer.entityType);
+
+                    if (e.getEntityType().equals(slayer.entityType)){
+                        slayer.incrementCurrentMobCount(1);
+                        slayer.updateQuestData(item);
+                    }
+
 
 //                    tomeMeta.getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, (tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER) + 1));
 //

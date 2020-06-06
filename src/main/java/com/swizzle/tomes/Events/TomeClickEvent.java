@@ -23,7 +23,7 @@ public class TomeClickEvent implements Listener {
                         e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Wood Tome", 2));
                         break;
                     case "Stone Tome":
-                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Stone Tome", 2));
+                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Stone Tome", 3));
                         break;
                 }
 

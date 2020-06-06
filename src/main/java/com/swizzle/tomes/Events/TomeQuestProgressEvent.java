@@ -2,6 +2,7 @@ package com.swizzle.tomes.Events;
 
 import com.swizzle.tomes.QuestTypes.IQuest;
 import com.swizzle.tomes.QuestTypes.Slayer;
+import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.Tomes;
 import com.swizzle.tomes.enums.QuestType;
 import com.swizzle.tomes.enums.TomeTypes;
@@ -52,7 +53,7 @@ public class TomeQuestProgressEvent implements Listener {
                 //Itterate through all items
                 for (int i = 0; i < items.size(); i++){
                     //If the item IS a tome
-                    if (items.get(i).getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER)){
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 0){
                         //Get the number of quests on it
                         int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(numberOfQuestsKey, PersistentDataType.INTEGER);
                         Slayer throwawayInstance = new Slayer(0);
@@ -104,6 +105,8 @@ public class TomeQuestProgressEvent implements Listener {
 //
 //                    item.setItemMeta(tomeMeta);
                     System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
+
+                    TomeObject.checkIfTomeIsComplete(item);
                 }
                 //Entity Will Die
             }

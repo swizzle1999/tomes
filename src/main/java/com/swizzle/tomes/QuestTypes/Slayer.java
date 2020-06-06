@@ -119,7 +119,6 @@ public class Slayer implements IQuest {
             List<String> list = Arrays.asList(splitLine);
             if (splitLine[0].equalsIgnoreCase(questName) && list.contains(this.entityType.toString().toLowerCase()+"(s)")){
                 tomeLore.set(i, getLoreText(isQuestComplete));
-                break;
             }
         }
 

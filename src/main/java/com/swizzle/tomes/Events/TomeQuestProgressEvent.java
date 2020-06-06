@@ -15,9 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TomeQuestProgressEvent implements Listener {
@@ -47,33 +45,51 @@ public class TomeQuestProgressEvent implements Listener {
                 }
 
                 NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
-                NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType");
+                NamespacedKey numberOfQuestsKey = new NamespacedKey(Tomes.getInstance(), "NumberOfQuests");
 
-                Slayer throwawayInstance = new Slayer();
-                List<ItemStack> tomes = items.stream().filter(itemStack -> itemStack.getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER)).filter(itemStack -> itemStack.getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())).collect(Collectors.toList());
+                ArrayList<ItemStack> tomes = new ArrayList<>();
+                ArrayList<Integer> questIndexs = new ArrayList<>();
+                //Itterate through all items
+                for (int i = 0; i < items.size(); i++){
+                    //If the item IS a tome
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER)){
+                        //Get the number of quests on it
+                        int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(numberOfQuestsKey, PersistentDataType.INTEGER);
+                        Slayer throwawayInstance = new Slayer(0);
+                        //For loop to itterate through each possible quest index
+                        for (int j = 0; j < numberOfQuestsOnTome; j++){
+                            NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+j);
+                            if (items.get(i).getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                                tomes.add(items.get(i));
+                                questIndexs.add(j);
+                            }
+                        }
+                    }
+                }
 
-                NamespacedKey questCurrentKey = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent");
-                NamespacedKey questTargetKey = new NamespacedKey(Tomes.getInstance(), "SlayerTarget");
-                NamespacedKey questTargetEntity = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType");
-                for (ItemStack item : tomes){
+
+
+
+
+                //List<ItemStack> tomes = items.stream().filter(itemStack -> itemStack.getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER)).filter(itemStack -> itemStack.getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())).collect(Collectors.toList());
+
+
+                for (int i = 0; i < tomes.size(); i++){
                     //A list of all the SLAYER tomes
+                    ItemStack item = tomes.get(i);
+                    int questIndex = questIndexs.get(i);
 
-//                    if (!item.getItemMeta().getPersistentDataContainer().has(questGoalKey, PersistentDataType.INTEGER)){
-//                        item.getItemMeta().getPersistentDataContainer().set(questGoalKey, PersistentDataType.INTEGER, 0);
-//                        item.getItemMeta().getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, 0);
-//                    }
+                    NamespacedKey questCurrentKey = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent"+questIndex);
+                    NamespacedKey questTargetKey = new NamespacedKey(Tomes.getInstance(), "SlayerTarget"+questIndex);
+                    NamespacedKey questTargetEntity = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType"+questIndex);
 
                     ItemMeta tomeMeta = item.getItemMeta();
 
-                    Slayer slayer = new Slayer();
+                    Slayer slayer = new Slayer(questIndex);
                     slayer.parseIntoObject(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER), EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
 
-                    System.out.println(e.getEntityType());
-                    System.out.println(slayer.entityType);
-
                     if (e.getEntityType().equals(slayer.entityType)){
-                        slayer.incrementCurrentMobCount(1);
-                        slayer.updateQuestData(item);
+                        slayer.incrementCurrentMobCount(1, item);
                     }
 
 

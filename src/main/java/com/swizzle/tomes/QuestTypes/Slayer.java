@@ -18,11 +18,14 @@ import java.util.Random;
 public class Slayer implements IQuest {
     private SlayerBundle slayerBundle;
 
-    public final String questName = "Slayer";
+    private final String questName = "Slayer";
 
-    public final NamespacedKey questGoalKey = new NamespacedKey(Tomes.getInstance(), "SlayerTarget");
-    public final NamespacedKey questCurrentKey = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent");
-    public final NamespacedKey questTargetEntity = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType");
+    private int questIndex;
+
+    public NamespacedKey slayerTargetKey;
+    public NamespacedKey slayerCurrentKey;
+    public NamespacedKey slayerTargetEntity;
+    public NamespacedKey slayerCompletedKey;
 
     public final ArrayList<EntityType> entityTypes = new ArrayList<EntityType>(Arrays.asList(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.CREEPER, EntityType.SPIDER, EntityType.ENDERMAN));
 
@@ -31,8 +34,38 @@ public class Slayer implements IQuest {
     public int targetMobCount;
     public EntityType entityType;
 
-    public void incrementCurrentMobCount(int incrementAmmount){
-        currentMobCount += incrementAmmount;
+    public Slayer(int questIndex){
+        //The quest index is the number that this specific quest is in the book
+        //For example the first quest might be a mine quest
+        //the second quest might be a slayer quest
+        //So the quest index for this quest would then be 1. It basically adjusts the keys below so they look in the correct place
+        //Also allows there to be multiple of the same quest type on the same book. Just some extra flexability really
+        this.questIndex = questIndex;
+        this.slayerTargetKey = new NamespacedKey(Tomes.getInstance(), "SlayerTarget"+questIndex);
+        this.slayerCurrentKey = slayerCurrentKey = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent"+questIndex);
+        this.slayerTargetEntity = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType"+questIndex);
+        this.slayerCompletedKey = new NamespacedKey(Tomes.getInstance(), "SlayerCompleted"+questIndex);
+    }
+
+    public void incrementCurrentMobCount(int incrementAmmount, ItemStack book){
+        ItemMeta tomeMeta = book.getItemMeta();
+        int isQuestComplete = tomeMeta.getPersistentDataContainer().get(slayerCompletedKey, PersistentDataType.INTEGER);
+        if (isQuestComplete == 1){
+            return;
+        } else {
+            if (currentMobCount + 1 >= targetMobCount){
+                currentMobCount += 1;
+                tomeMeta.getPersistentDataContainer().set(slayerCompletedKey, PersistentDataType.INTEGER, 1);
+                book.setItemMeta(tomeMeta);
+                isQuestComplete = tomeMeta.getPersistentDataContainer().get(slayerCompletedKey, PersistentDataType.INTEGER);
+            } else {
+                currentMobCount += incrementAmmount;
+            }
+
+            updateQuestData(book, isQuestComplete);
+        }
+
+
     }
 
 //    public void setLoreText(ArrayList<String> loreText) {
@@ -46,9 +79,10 @@ public class Slayer implements IQuest {
 
         ItemMeta tomeMeta = book.getItemMeta();
 
-        tomeMeta.getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
-        tomeMeta.getPersistentDataContainer().set(questGoalKey, PersistentDataType.INTEGER, this.targetMobCount);
-        tomeMeta.getPersistentDataContainer().set(questTargetEntity, PersistentDataType.STRING, this.entityType.toString());
+        tomeMeta.getPersistentDataContainer().set(slayerCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
+        tomeMeta.getPersistentDataContainer().set(slayerTargetKey, PersistentDataType.INTEGER, this.targetMobCount);
+        tomeMeta.getPersistentDataContainer().set(slayerTargetEntity, PersistentDataType.STRING, this.entityType.toString());
+        tomeMeta.getPersistentDataContainer().set(slayerCompletedKey, PersistentDataType.INTEGER, 0);
 
         List<String> loreTextArray = tomeMeta.getLore();
 
@@ -59,7 +93,8 @@ public class Slayer implements IQuest {
             loreTextArray = tomeMeta.getLore();
         }
 
-        String loreText = questName + " | " + tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER).toString() + "/" + tomeMeta.getPersistentDataContainer().get(questGoalKey, PersistentDataType.INTEGER).toString() + " " + this.entityType.toString().toLowerCase() + "(s)" + " Killed";
+
+        String loreText = getLoreText(0);
         loreTextArray.add(loreText);
 
         tomeMeta.setLore(loreTextArray);
@@ -69,20 +104,21 @@ public class Slayer implements IQuest {
         return book;
     }
 
-    public ItemStack updateQuestData(ItemStack book){
+    public ItemStack updateQuestData(ItemStack book, int isQuestComplete){
 
         ItemMeta tomeMeta = book.getItemMeta();
 
-        tomeMeta.getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
-        tomeMeta.getPersistentDataContainer().set(questGoalKey, PersistentDataType.INTEGER, this.targetMobCount);
-        tomeMeta.getPersistentDataContainer().set(questTargetEntity, PersistentDataType.STRING, this.entityType.toString());
+        tomeMeta.getPersistentDataContainer().set(slayerCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
+        tomeMeta.getPersistentDataContainer().set(slayerTargetKey, PersistentDataType.INTEGER, this.targetMobCount);
+        tomeMeta.getPersistentDataContainer().set(slayerTargetEntity, PersistentDataType.STRING, this.entityType.toString());
 
         List<String> tomeLore = tomeMeta.getLore();
 
         for(int i = 0; i < tomeLore.size(); i++){
             String[] splitLine = tomeLore.get(i).split(" ");
-            if (splitLine[0].equalsIgnoreCase(questName)){
-                tomeLore.set(i, questName + " | " + tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER).toString() + "/" + tomeMeta.getPersistentDataContainer().get(questGoalKey, PersistentDataType.INTEGER).toString() + " " + this.entityType.toString().toLowerCase() + "(s)" + " Killed");
+            List<String> list = Arrays.asList(splitLine);
+            if (splitLine[0].equalsIgnoreCase(questName) && list.contains(this.entityType.toString().toLowerCase()+"(s)")){
+                tomeLore.set(i, getLoreText(isQuestComplete));
                 break;
             }
         }
@@ -93,15 +129,24 @@ public class Slayer implements IQuest {
         return book;
     }
 
+    public String getLoreText(int isQuestComplete){
+        String loreText = this.questName + " | " + this.currentMobCount + "/" + this.targetMobCount + " " + this.entityType.toString().toLowerCase() + "(s)" + " Killed";
+        if (isQuestComplete == 1){
+            loreText += " | COMPLETE";
+        }
+        return loreText;
+    };
+
     public EntityType pickRandomMob(){
         Random random = new Random();
         return entityTypes.get(random.nextInt(entityTypes.size()));
     }
 
     @Override
-    public String getQuestName() {
+    public String getQuestName(){
         return questName;
     }
+
 
     public void parseIntoObject(int currentMobCount, int targetMobCount, EntityType entityType) {
         this.currentMobCount = currentMobCount;

@@ -17,13 +17,13 @@ public class TomeClickEvent implements Listener {
                 //Check which tome was clicked
                 switch(e.getCurrentItem().getItemMeta().getDisplayName()){
                     case "Dirt Tome":
-                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Dirt Tome"));
+                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Dirt Tome", 1));
                         break;
                     case "Wood Tome":
-                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Wood Tome"));
+                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Wood Tome", 2));
                         break;
                     case "Stone Tome":
-                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Stone Tome"));
+                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook("Stone Tome", 2));
                         break;
                 }
 

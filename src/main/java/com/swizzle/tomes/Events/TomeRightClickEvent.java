@@ -1,25 +1,12 @@
 package com.swizzle.tomes.Events;
 
 import com.swizzle.tomes.TomeObject;
-import com.swizzle.tomes.TomeTypes.GetReward;
-import com.swizzle.tomes.TomeTypes.WoodRewards;
-import com.swizzle.tomes.Tomes;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class TomeRightClickEvent implements Listener {
     @EventHandler
@@ -29,8 +16,9 @@ public class TomeRightClickEvent implements Listener {
             if (tome.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 1){
                 System.out.println("TOME IS COMPLETE");
 
-                ItemStack reward = GetReward.chooseReward(WoodRewards.rewards);
-                e.getPlayer().getInventory().addItem(reward);
+                //Give player their reward here!!!!!!!!!!!!!!!!
+//                ItemStack reward = Rewards.chooseReward(WoodRewards.rewards);
+//                e.getPlayer().getInventory().addItem(reward);
 
                 //System.out.println(Tomes.getInstance().getConfig().getList("loottable.wood").toString());
 

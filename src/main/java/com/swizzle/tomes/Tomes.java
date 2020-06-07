@@ -3,9 +3,7 @@ package com.swizzle.tomes;
 import com.swizzle.tomes.Events.TomeClickEvent;
 import com.swizzle.tomes.Events.TomeQuestProgressEvent;
 import com.swizzle.tomes.Events.TomeRightClickEvent;
-import com.swizzle.tomes.TomeTypes.WoodRewards;
 import com.swizzle.tomes.commands.TomesCommand;
-import org.bukkit.material.Wood;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Tomes extends JavaPlugin {
@@ -26,8 +24,8 @@ public final class Tomes extends JavaPlugin {
 
         loadConfig();
 
-        WoodRewards woodRewards = new WoodRewards();
-        System.out.println(WoodRewards.rewards);
+//        WoodRewards woodRewards = new WoodRewards();
+//        System.out.println(WoodRewards.rewards);
 
     }
 

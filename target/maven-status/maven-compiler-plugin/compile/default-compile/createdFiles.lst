@@ -1,13 +1,11 @@
-com\swizzle\tomes\TomeTypes\WoodRewards.class
 com\swizzle\tomes\commands\TomesCommand.class
 com\swizzle\tomes\Events\TomeQuestProgressEvent.class
-com\swizzle\tomes\TomeTypes\GetReward.class
 com\swizzle\tomes\Events\TomeRightClickEvent.class
 com\swizzle\tomes\QuestTypes\Mine.class
 com\swizzle\tomes\QuestTypes\Slayer.class
-com\swizzle\tomes\commands\AddRewardCommand.class
 com\swizzle\tomes\enums\TomeTypes.class
 com\swizzle\tomes\Tomes.class
+com\swizzle\tomes\TomeTypes\Rewards.class
 com\swizzle\tomes\enums\QuestType.class
 com\swizzle\tomes\QuestTypes\IQuest.class
 com\swizzle\tomes\QuestTypes\MineBundle.class

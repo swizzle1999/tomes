@@ -18,9 +18,6 @@ public class TomeRightClickEvent implements Listener {
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getItem().getItemMeta().getPersistentDataContainer().has(TomeObject.tomeKey, PersistentDataType.INTEGER)){
             ItemStack currentItem = e.getItem();
             if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 1){
-                //System.out.println("TOME IS COMPLETE");
-//                System.out.println(tome.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING));
-
                 int counter = 0;
                 for (Tome tome : TomeObject.tomes){
                     if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase(tome.getTomeVariableName())){
@@ -32,14 +29,6 @@ public class TomeRightClickEvent implements Listener {
                         break;
                     }
                 }
-//
-//                if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase("dirt")){
-//                    System.out.println("its a dirt tome");
-//                } else if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase("wood")){
-//                    System.out.println("its a wood tome");
-//                } else if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase("stone")){
-//                    System.out.println("its a stone tome");
-//                }
             }
         }
     }

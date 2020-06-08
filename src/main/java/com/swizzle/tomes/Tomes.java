@@ -24,9 +24,6 @@ public final class Tomes extends JavaPlugin {
 
         loadConfig();
 
-//        WoodRewards woodRewards = new WoodRewards();
-//        System.out.println(WoodRewards.rewards);
-
     }
 
     @Override

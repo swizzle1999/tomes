@@ -29,13 +29,6 @@ public class TomeQuestProgressEvent implements Listener {
                 for (ItemStack item : inventory.getContents()){
                     if (item != null) {
                         items.add(item);
-                        //Debugging Stuff
-//                        if (item.getItemMeta().getLore() != null) {
-//                            System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore:" + item.getItemMeta().getLore().get(0));
-//                            NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType");
-//                            //System.out.println(item.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.STRING));
-//                            System.out.println(item.getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(QuestType.SLAYER.toString()));
-//                        }
                     } else {
                         continue;
                     }
@@ -64,13 +57,6 @@ public class TomeQuestProgressEvent implements Listener {
                     }
                 }
 
-
-
-
-
-                //List<ItemStack> tomes = items.stream().filter(itemStack -> itemStack.getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER)).filter(itemStack -> itemStack.getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())).collect(Collectors.toList());
-
-
                 for (int i = 0; i < tomes.size(); i++){
                     //A list of all the SLAYER tomes
                     ItemStack item = tomes.get(i);
@@ -89,17 +75,6 @@ public class TomeQuestProgressEvent implements Listener {
                         slayer.incrementCurrentMobCount(1, item);
                     }
 
-
-//                    tomeMeta.getPersistentDataContainer().set(questCurrentKey, PersistentDataType.INTEGER, (tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER) + 1));
-//
-//                    //List<String> tomeLore = new List<String>();
-//                    List<String> tomeLore = tomeMeta.getLore();
-//                    tomeLore.remove(tomeLore.size() - 1);
-//                    tomeLore.add(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER).toString() + "/" + item.getItemMeta().getPersistentDataContainer().get(questGoalKey, PersistentDataType.INTEGER).toString());
-//
-//                    tomeMeta.setLore(tomeLore);
-//
-//                    item.setItemMeta(tomeMeta);
                     System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
                     TomeObject.checkIfTomeIsComplete(item);

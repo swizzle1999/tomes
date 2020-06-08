@@ -62,29 +62,10 @@ public class TomeObject {
 
         tomeMeta = tome.getItemMeta();
 
-//        String loreText = "";
-
-//        switch(questType){
-//            case inst:
-//                loreText = "Kill Mobs";
-//                break;
-//            case MINE:
-//                loreText = "Mine Blocks";
-//                break;
-//        }
-
-//        tomeLore.add(loreText);
-//        tomeMeta.setLore(tomeLore);
-
-
-
-        //Data that is common between all books
-
         tomeMeta.setDisplayName(title);
 
 
         tomeMeta.getPersistentDataContainer().set(tomeKey, PersistentDataType.INTEGER, 1);
-
         tomeMeta.getPersistentDataContainer().set(tomeCompleteKey, PersistentDataType.INTEGER, 0);
 
         tome.setItemMeta(tomeMeta);

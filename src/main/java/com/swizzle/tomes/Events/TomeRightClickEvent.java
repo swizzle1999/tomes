@@ -1,6 +1,7 @@
 package com.swizzle.tomes.Events;
 
 import com.swizzle.tomes.TomeObject;
+import com.swizzle.tomes.TomeTypes.Tome;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -8,57 +9,37 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class TomeRightClickEvent implements Listener {
     @EventHandler
     public void onRightClickTome(PlayerInteractEvent e){
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getItem().getItemMeta().getPersistentDataContainer().has(TomeObject.tomeKey, PersistentDataType.INTEGER)){
-            ItemStack tome = e.getItem();
-            if (tome.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 1){
-                System.out.println("TOME IS COMPLETE");
+            ItemStack currentItem = e.getItem();
+            if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 1){
+                //System.out.println("TOME IS COMPLETE");
+//                System.out.println(tome.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING));
 
-                //Give player their reward here!!!!!!!!!!!!!!!!
-//                ItemStack reward = Rewards.chooseReward(WoodRewards.rewards);
-//                e.getPlayer().getInventory().addItem(reward);
+                int counter = 0;
+                for (Tome tome : TomeObject.tomes){
+                    if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase(tome.getTomeVariableName())){
+                        //System.out.println("its a " + tome.getTomeDisplayName());
+                        ArrayList<ItemStack> rewardsArray = tome.getRewardsArray(tome.getTomeVariableName());
 
-                //System.out.println(Tomes.getInstance().getConfig().getList("loottable.wood").toString());
-
-//                List<?> tempLootTableList = Tomes.getInstance().getConfig().getList("loottable.wood");
+                        Random random = new Random();
+                        e.getPlayer().getInventory().addItem(rewardsArray.get(random.nextInt(rewardsArray.size())));
+                        break;
+                    }
+                }
 //
-//                for (int i = 0; i < tempLootTableList.size(); i++){
-//                    ItemStack item = (ItemStack)tempLootTableList.get(i);
-//
-//                    System.out.println(item.getData());
+//                if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase("dirt")){
+//                    System.out.println("its a dirt tome");
+//                } else if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase("wood")){
+//                    System.out.println("its a wood tome");
+//                } else if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase("stone")){
+//                    System.out.println("its a stone tome");
 //                }
-//                if (lootTableList == null){
-//                    lootTableList = new ArrayList<>();
-//                }
-//
-////                NamespacedKey key = new NamespacedKey(Tomes.getInstance(), "test");
-////                ItemStack customItem = new ItemStack(Material.BOOK);
-////                ItemMeta customItemMeta = customItem.getItemMeta();
-////                customItemMeta.getPersistentDataContainer().set(key , PersistentDataType.STRING, "hgello");
-////                customItem.setItemMeta(customItemMeta);
-//
-//                ItemStack diamonds = new ItemStack(Material.DIAMOND, 64);
-//                ItemStack dirt = new ItemStack(Material.DIRT, 64);
-//
-//
-//                lootTableList.add(diamonds);
-//                lootTableList.add(dirt);
-//
-//                Tomes.getInstance().getConfig().set("loottable.wood", lootTableList);
-//                Tomes.getInstance().saveConfig();
-//
-//                lootTableList = (List<ItemStack>)Tomes.getInstance().getConfig().getList("loottable.wood");
-//
-////                for (int i = 0; i < lootTableList.size(); i ++){
-////                    ItemStack test = lootTableList.get(i);
-////                }
-//
-//                Random random = new Random();
-//                ItemStack randItem = lootTableList.getItemStack(random.nextInt(lootTableList.size()));
-//
-//                System.out.println(randItem.getData());
             }
         }
     }

@@ -4,12 +4,17 @@ D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\TomeObject.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\QuestTypes\IQuest.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\enums\MobType.java
+D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\TomeTypes\StoneTome.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\QuestTypes\SlayerBundle.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\Events\TomeClickEvent.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\QuestTypes\MineBundle.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\Tomes.java
+D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\Utils\ItemCreator.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\QuestTypes\Mine.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\TomeTypes\Rewards.java
+D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\TomeTypes\DirtTome.java
+D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\TomeTypes\Tome.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\enums\QuestType.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\enums\TomeTypes.java
 D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\Events\TomeRightClickEvent.java
+D:\Users\swizzle1999\Documents\Programming\Java\MinecraftPlugins\Tomes\src\main\java\com\swizzle\tomes\TomeTypes\WoodTome.java

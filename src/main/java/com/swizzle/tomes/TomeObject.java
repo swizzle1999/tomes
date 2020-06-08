@@ -4,6 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import com.swizzle.tomes.QuestTypes.IQuest;
 import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
+import com.swizzle.tomes.TomeTypes.DirtTome;
+import com.swizzle.tomes.TomeTypes.StoneTome;
+import com.swizzle.tomes.TomeTypes.Tome;
+import com.swizzle.tomes.TomeTypes.WoodTome;
 import com.swizzle.tomes.enums.QuestType;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -18,10 +22,12 @@ import java.util.*;
 
 public class TomeObject {
 
+    public static final ArrayList<Tome> tomes = new ArrayList<Tome>(Arrays.asList(new DirtTome(), new WoodTome(), new StoneTome()));
     private static ArrayList<IQuest> questTypes = new ArrayList<IQuest>(Arrays.asList(new Slayer(0)));
     //private static ArrayList<IQuest> questTypes = new ArrayList<IQuest>(Arrays.asList(new Slayer(0), new Mine()));
 
     public static final NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
+    public static final NamespacedKey tomeTypeKey = new NamespacedKey(Tomes.getInstance(), "TomeType");
     public static final NamespacedKey numberOfQuestsKey = new NamespacedKey(Tomes.getInstance(), "NumberOfQuests");
     public static final NamespacedKey tomeCompleteKey = new NamespacedKey(Tomes.getInstance(), "TomeComplete");
 
@@ -30,7 +36,7 @@ public class TomeObject {
         return questsToChooseFrom.get(random.nextInt(questsToChooseFrom.size()));
     }
 
-    public static ItemStack giveBook(String title, int numberOfQuests){
+    public static ItemStack giveBook(String title, int numberOfQuests, String tomeType){
         ItemStack tome = new ItemStack(Material.BOOK);
         ItemMeta tomeMeta = tome.getItemMeta();
 
@@ -45,6 +51,9 @@ public class TomeObject {
             tomeMeta = tome.getItemMeta();
             NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+i);
             tomeMeta.getPersistentDataContainer().set(questTypeKey, PersistentDataType.STRING, questType.getQuestName());
+            System.out.println("THIS: " + tomeType);
+            tomeMeta.getPersistentDataContainer().set(tomeTypeKey, PersistentDataType.STRING, tomeType);
+
             tome.setItemMeta(tomeMeta);
 
             //Applying unique quest data

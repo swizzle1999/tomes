@@ -1,23 +1,27 @@
 package com.swizzle.tomes.TomeTypes;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.swizzle.tomes.Tomes;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 public class Rewards {
 
     private HashMap<ItemStack, Integer> rewards;
+    private String tomeName;
 
-    public Rewards(){
+    public Rewards(String tomeName){
         rewards = new HashMap<ItemStack, Integer>();
+        this.tomeName = tomeName;
     }
 
     public ItemStack chooseReward(HashMap<ItemStack, Integer> rewards){
@@ -32,36 +36,53 @@ public class Rewards {
         return finalRewardsList.get(random.nextInt(finalRewardsList.size()));
     }
 
-    public void addRewardToHashMap(String tomeName, ItemStack item, Integer probability){
-        parseFileToObject(tomeName);
+    public void addRewardToHashMap(ItemStack item, Integer probability){
         rewards.put(item, probability);
+        saveObjectToFile();
+        parseFileToObject();
     }
 
     public void printRewards(){
         System.out.println(rewards.toString());
     }
 
-    public void parseFileToObject(String tomeName){
-        ObjectMapper mapper = new ObjectMapper();
+    private void parseFileToObject(){
 
-        File file = new File(Tomes.getInstance().getDataFolder() + "/" + tomeName + ".json");
+        List<ItemStack> items = (List<ItemStack>)Tomes.getInstance().getConfig().get("loottable.wood");
 
-        try {
-            rewards = mapper.readValue(file, HashMap.class);
-        } catch (IOException e){
-            System.out.println("Error");
+        for (int i = 0; i < items.size(); i++){
+            System.out.println(items.get(i).getData());
         }
 
-        for (Map.Entry<ItemStack, Integer> entry : rewards.entrySet()){
-            System.out.println(entry.getKey().getData());
-        }
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        File file = new File(Tomes.getInstance().getDataFolder() + "/" + this.tomeName + ".json");
+//        HashMap<String, Integer> rewardsStrings = null;
+//        try {
+//            rewardsStrings = mapper.readValue(file, HashMap.class);
+//        } catch (IOException e){
+//            System.out.println("Error");
+//        }
+//
+//        for (Map.Entry<String, Integer> entry : rewardsStrings.entrySet()){
+//            JsonObject object = null;
+//            try{
+//                object = new JsonParser().parse(entry.getKey()).getAsJsonObject();
+//            } catch (Exception e){
+//                System.out.println("error");
+//            }
+//
+//            System.out.println(object.toString());
+//        }
     }
 
-    public void saveObjectToFile(String tomeName){
+    private void saveObjectToFile(){
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            mapper.writeValue(new File(Tomes.getInstance().getDataFolder() + "/" + tomeName + ".json"), rewards);
+            File file = new File(Tomes.getInstance().getDataFolder() + "/" + this.tomeName + ".json");
+            mapper.writeValue(file, rewards);
+
         } catch (IOException e){
             System.out.println("error");
         }

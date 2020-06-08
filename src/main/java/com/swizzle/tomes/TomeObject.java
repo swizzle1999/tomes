@@ -1,6 +1,5 @@
 package com.swizzle.tomes;
 
-import com.google.common.collect.ImmutableMap;
 import com.swizzle.tomes.QuestTypes.IQuest;
 import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
@@ -8,16 +7,12 @@ import com.swizzle.tomes.TomeTypes.DirtTome;
 import com.swizzle.tomes.TomeTypes.StoneTome;
 import com.swizzle.tomes.TomeTypes.Tome;
 import com.swizzle.tomes.TomeTypes.WoodTome;
-import com.swizzle.tomes.enums.QuestType;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.*;
 
 public class TomeObject {

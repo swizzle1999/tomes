@@ -1,11 +1,8 @@
 package com.swizzle.tomes.Events;
 
-import com.swizzle.tomes.QuestTypes.IQuest;
 import com.swizzle.tomes.QuestTypes.Slayer;
 import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.Tomes;
-import com.swizzle.tomes.enums.QuestType;
-import com.swizzle.tomes.enums.TomeTypes;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -17,7 +14,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TomeQuestProgressEvent implements Listener {
 

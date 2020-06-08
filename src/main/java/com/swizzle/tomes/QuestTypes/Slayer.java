@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Slayer implements IQuest {
-    private SlayerBundle slayerBundle;
-
     private final String questName = "Slayer";
 
     private int questIndex;

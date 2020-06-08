@@ -1,11 +1,9 @@
 package com.swizzle.tomes.commands;
 
 import com.swizzle.tomes.TomeObject;
-import com.swizzle.tomes.TomeTypes.Rewards;
 import com.swizzle.tomes.TomeTypes.Tome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TomesCommand implements CommandExecutor {
     @Override

@@ -86,7 +86,7 @@ public class TomesCommand implements CommandExecutor {
 
                         int index = 0;
 
-                        ConfigurationSection configSection = Tomes.getInstance().getConfig().getConfigurationSection("loottable." + args[2] + ".items");
+                        ConfigurationSection configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.items");
                         if (configSection == null){
                             System.out.println("Configuration Section Is Empty");
                             index = 0;
@@ -101,9 +101,9 @@ public class TomesCommand implements CommandExecutor {
                             }
                         }
 
-                        Tomes.getInstance().getConfig().set("loottable." + args[2] + ".items." + String.valueOf(index), newReward);
+                        Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.items." + String.valueOf(index), newReward);
 
-                        configSection = Tomes.getInstance().getConfig().getConfigurationSection("loottable." + args[2] + ".weights");
+                        configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.weights");
                         if (configSection == null){
                             System.out.println("Configuration Section Is Empty");
                             index = 0;
@@ -118,7 +118,7 @@ public class TomesCommand implements CommandExecutor {
                             }
                         }
 
-                        Tomes.getInstance().getConfig().set("loottable." + args[2] + ".weights." + String.valueOf(index), args[3]);
+                        Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.weights." + String.valueOf(index), args[3]);
 
                         Tomes.getInstance().saveConfig();
                     }

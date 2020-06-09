@@ -18,7 +18,7 @@ import java.util.*;
 public class TomeObject {
 
     public static final ArrayList<Tome> tomes = new ArrayList<Tome>(Arrays.asList(new DirtTome(), new WoodTome(), new StoneTome()));
-    private static ArrayList<IQuest> questTypes = new ArrayList<IQuest>(Arrays.asList(new Slayer(0)));
+    //private static ArrayList<IQuest> questTypes = new ArrayList<IQuest>(Arrays.asList(new Slayer(0)));
     //private static ArrayList<IQuest> questTypes = new ArrayList<IQuest>(Arrays.asList(new Slayer(0), new Mine()));
 
     public static final NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
@@ -31,47 +31,47 @@ public class TomeObject {
         return questsToChooseFrom.get(random.nextInt(questsToChooseFrom.size()));
     }
 
-    public static ItemStack giveBook(String title, int numberOfQuests, String tomeType){
-        ItemStack tome = new ItemStack(Material.BOOK);
-        ItemMeta tomeMeta = tome.getItemMeta();
-
-        tomeMeta.getPersistentDataContainer().set(numberOfQuestsKey, PersistentDataType.INTEGER, numberOfQuests);
-
-        tome.setItemMeta(tomeMeta);
-
-        ArrayList<IQuest> questTypesCopy = new ArrayList<>(questTypes);
-        for (int i = 0; i < numberOfQuests; i++){
-            IQuest questType = chooseRandomQuest(questTypesCopy);
-
-            tomeMeta = tome.getItemMeta();
-            NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+i);
-            tomeMeta.getPersistentDataContainer().set(questTypeKey, PersistentDataType.STRING, questType.getQuestName());
-            System.out.println("THIS: " + tomeType);
-            tomeMeta.getPersistentDataContainer().set(tomeTypeKey, PersistentDataType.STRING, tomeType);
-
-            tome.setItemMeta(tomeMeta);
-
-            //Applying unique quest data
-            if (questType instanceof Mine){
-
-            } else if (questType instanceof Slayer){
-                Slayer slayer = new Slayer(i);
-                tome = slayer.applyQuest(tome,  3);
-            }
-        }
-
-        tomeMeta = tome.getItemMeta();
-
-        tomeMeta.setDisplayName(title);
-
-
-        tomeMeta.getPersistentDataContainer().set(tomeKey, PersistentDataType.INTEGER, 1);
-        tomeMeta.getPersistentDataContainer().set(tomeCompleteKey, PersistentDataType.INTEGER, 0);
-
-        tome.setItemMeta(tomeMeta);
-
-        return tome;
-    }
+//    public static ItemStack giveBook(String title, int numberOfQuests, String tomeType){
+//        ItemStack tome = new ItemStack(Material.BOOK);
+//        ItemMeta tomeMeta = tome.getItemMeta();
+//
+//        tomeMeta.getPersistentDataContainer().set(numberOfQuestsKey, PersistentDataType.INTEGER, numberOfQuests);
+//
+//        tome.setItemMeta(tomeMeta);
+//
+//        ArrayList<IQuest> questTypesCopy = new ArrayList<>(questTypes);
+//        for (int i = 0; i < numberOfQuests; i++){
+//            IQuest questType = chooseRandomQuest(questTypesCopy);
+//
+//            tomeMeta = tome.getItemMeta();
+//            NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+i);
+//            tomeMeta.getPersistentDataContainer().set(questTypeKey, PersistentDataType.STRING, questType.getQuestName());
+//            System.out.println("THIS: " + tomeType);
+//            tomeMeta.getPersistentDataContainer().set(tomeTypeKey, PersistentDataType.STRING, tomeType);
+//
+//            tome.setItemMeta(tomeMeta);
+//
+//            //Applying unique quest data
+//            if (questType instanceof Mine){
+//
+//            } else if (questType instanceof Slayer){
+//                Slayer slayer = new Slayer(i);
+//                tome = slayer.applyQuest(tome,  3);
+//            }
+//        }
+//
+//        tomeMeta = tome.getItemMeta();
+//
+//        tomeMeta.setDisplayName(title);
+//
+//
+//        tomeMeta.getPersistentDataContainer().set(tomeKey, PersistentDataType.INTEGER, 1);
+//        tomeMeta.getPersistentDataContainer().set(tomeCompleteKey, PersistentDataType.INTEGER, 0);
+//
+//        tome.setItemMeta(tomeMeta);
+//
+//        return tome;
+//    }
 
     public static void checkIfTomeIsComplete(ItemStack tome){
         ItemMeta tomeMeta = tome.getItemMeta();
@@ -89,7 +89,7 @@ public class TomeObject {
                     NamespacedKey questTargetKey = new NamespacedKey(Tomes.getInstance(), "SlayerTarget"+i);
                     NamespacedKey questTargetEntity = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType"+i);
 
-                    Slayer slayer = new Slayer(i);
+                    Slayer slayer = new Slayer(i, null, 0, 0);
 
                     if (tomeMeta.getPersistentDataContainer().get(slayer.slayerCompletedKey, PersistentDataType.INTEGER) == 1){
                         numberOfCompleteQuests += 1;

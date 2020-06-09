@@ -45,7 +45,7 @@ public class TomeQuestProgressEvent implements Listener {
                     if (items.get(i).getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 0){
                         //Get the number of quests on it
                         int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(numberOfQuestsKey, PersistentDataType.INTEGER);
-                        Slayer throwawayInstance = new Slayer(0);
+                        Slayer throwawayInstance = new Slayer(0, null, 0, 0);
                         //For loop to itterate through each possible quest index
                         for (int j = 0; j < numberOfQuestsOnTome; j++){
                             NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+j);
@@ -68,10 +68,10 @@ public class TomeQuestProgressEvent implements Listener {
 
                     ItemMeta tomeMeta = item.getItemMeta();
 
-                    Slayer slayer = new Slayer(questIndex);
-                    slayer.parseIntoObject(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER), EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
+                    Slayer slayer = new Slayer(questIndex, EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER));
+                    //slayer.parseIntoObject(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER), EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
 
-                    if (e.getEntityType().equals(slayer.entityType)){
+                    if (e.getEntityType().equals(slayer.getEntityType())){
                         slayer.incrementCurrentMobCount(1, item);
                     }
 

@@ -18,7 +18,6 @@ public class TomeRightClickEvent implements Listener {
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getItem().getItemMeta().getPersistentDataContainer().has(TomeObject.tomeKey, PersistentDataType.INTEGER)){
             ItemStack currentItem = e.getItem();
             if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 1){
-                int counter = 0;
                 for (Tome tome : TomeObject.tomes){
                     if (currentItem.getItemMeta().getPersistentDataContainer().get(TomeObject.tomeTypeKey, PersistentDataType.STRING).equalsIgnoreCase(tome.getTomeVariableName())){
                         //System.out.println("its a " + tome.getTomeDisplayName());

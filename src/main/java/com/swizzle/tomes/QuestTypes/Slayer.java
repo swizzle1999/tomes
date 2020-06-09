@@ -1,6 +1,10 @@
 package com.swizzle.tomes.QuestTypes;
 
 import com.swizzle.tomes.TomeObject;
+import com.swizzle.tomes.TomeTypes.DirtTome;
+import com.swizzle.tomes.TomeTypes.StoneTome;
+import com.swizzle.tomes.TomeTypes.Tome;
+import com.swizzle.tomes.TomeTypes.WoodTome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
@@ -25,14 +29,19 @@ public class Slayer implements IQuest {
     public NamespacedKey slayerTargetEntity;
     public NamespacedKey slayerCompletedKey;
 
-    public final ArrayList<EntityType> entityTypes = new ArrayList<EntityType>(Arrays.asList(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.CREEPER, EntityType.SPIDER, EntityType.ENDERMAN));
+    private ArrayList<EntityType> entityTypes;// = new ArrayList<EntityType>(Arrays.asList(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.CREEPER, EntityType.SPIDER, EntityType.ENDERMAN));
 
     //Variables that get parsed from book into this class
-    public int currentMobCount;
-    public int targetMobCount;
-    public EntityType entityType;
+    private int currentMobCount;
+    private int targetMobCount;
+    private EntityType entityType;
 
-    public Slayer(int questIndex){
+    public Slayer(int questIndex, EntityType entityType, int currentMobCount, int targetMobCount){
+
+        this.entityType = entityType;
+        this.targetMobCount = targetMobCount;
+        this.currentMobCount = currentMobCount;
+
         //The quest index is the number that this specific quest is in the book
         //For example the first quest might be a mine quest
         //the second quest might be a slayer quest
@@ -70,11 +79,7 @@ public class Slayer implements IQuest {
 //        loreText = loreText;
 //    }
 
-    public ItemStack applyQuest(ItemStack book, int targetMobCount){
-        this.currentMobCount = 0;
-        this.targetMobCount = targetMobCount;
-        this.entityType = pickRandomMob();
-
+    public ItemStack applyQuest(ItemStack book){
         ItemMeta tomeMeta = book.getItemMeta();
 
         tomeMeta.getPersistentDataContainer().set(slayerCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
@@ -144,11 +149,8 @@ public class Slayer implements IQuest {
         return questName;
     }
 
-
-    public void parseIntoObject(int currentMobCount, int targetMobCount, EntityType entityType) {
-        this.currentMobCount = currentMobCount;
-        this.targetMobCount = targetMobCount;
-        this.entityType = entityType;
+    public EntityType getEntityType(){
+        return this.entityType;
     }
 
 }

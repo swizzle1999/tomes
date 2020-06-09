@@ -20,7 +20,7 @@ public class TomeClickEvent implements Listener {
 
                 for (Tome tome : TomeObject.tomes){
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(tome.getTomeDisplayName())){
-                        e.getWhoClicked().getInventory().addItem(TomeObject.giveBook(tome.getTomeDisplayName(), tome.getNumberOfQuests(), tome.getTomeVariableName()));
+                        e.getWhoClicked().getInventory().addItem(tome.giveBook());
                     }
                 }
 //                switch(e.getCurrentItem().getItemMeta().getDisplayName()){

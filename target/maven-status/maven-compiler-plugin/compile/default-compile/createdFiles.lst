@@ -6,6 +6,7 @@ com\swizzle\tomes\QuestTypes\Mine.class
 com\swizzle\tomes\TomeTypes\StoneTome.class
 com\swizzle\tomes\QuestTypes\Slayer.class
 com\swizzle\tomes\Tomes.class
+com\swizzle\tomes\QuestTypes\MineTomeCustomization.class
 com\swizzle\tomes\TomeTypes\Tome.class
 com\swizzle\tomes\QuestTypes\IQuest.class
 com\swizzle\tomes\TomeTypes\WoodTome.class

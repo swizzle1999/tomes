@@ -1,9 +1,6 @@
 package com.swizzle.tomes.TomeTypes;
 
-import com.swizzle.tomes.QuestTypes.IQuest;
-import com.swizzle.tomes.QuestTypes.Mine;
-import com.swizzle.tomes.QuestTypes.Slayer;
-import com.swizzle.tomes.QuestTypes.SlayerTomeCustomization;
+import com.swizzle.tomes.QuestTypes.*;
 import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Material;
@@ -26,6 +23,7 @@ public class WoodTome extends Tome{
     private List<IQuest> availableQuests = new ArrayList<IQuest>();
 
     private SlayerTomeCustomization slayerTomeCustomization;
+    private MineTomeCustomization mineTomeCustomization;
 
     public WoodTome(){
         //Slayer Section
@@ -49,6 +47,28 @@ public class WoodTome extends Tome{
 
         this.slayerTomeCustomization = new SlayerTomeCustomization(entities, minNums, maxNums);
         this.availableQuests.add(new Slayer(0, null, 0,0));
+
+        //Mine Section
+        ArrayList<Material> materials = new ArrayList<Material>();
+        minNums = new ArrayList<Integer>();
+        maxNums = new ArrayList<Integer>();
+
+        ConfigurationSection mineMaterialsConfig = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + this.tomeVariableName + ".mine.materials");
+        for (String key : mineMaterialsConfig.getKeys(false)){
+            Material material = Material.valueOf(Tomes.getInstance().getConfig().getString("tomes." + this.tomeVariableName + ".mine.materials."+key));
+            int minNum = Tomes.getInstance().getConfig().getInt("tomes." + this.tomeVariableName + ".mine.minNumbers."+key);
+            int maxNum = Tomes.getInstance().getConfig().getInt("tomes." + this.tomeVariableName + ".mine.maxNumbers."+key);
+
+            if (material == null || minNum == 0 || maxNum == 0){
+                System.out.println("ERROR CONFIGURATION IS WRONG SOMEWHERE");
+            }
+            materials.add(material);
+            minNums.add(minNum);
+            maxNums.add(maxNum);
+        }
+
+        this.mineTomeCustomization = new MineTomeCustomization(materials, minNums, maxNums);
+        this.availableQuests.add(new Mine(0, null, 0,0));
     }
 
 
@@ -90,7 +110,12 @@ public class WoodTome extends Tome{
             Random random = new Random();
             //Applying unique quest data
             if (questType instanceof Mine){
+                Material material = this.mineTomeCustomization.getMaterials().get(random.nextInt(this.mineTomeCustomization.getMaterials().size()));
+                int indexOfEntity = this.mineTomeCustomization.getMaterials().indexOf(material);
+                int targetNumber = random.nextInt(this.mineTomeCustomization.getMaxNums().get(indexOfEntity) - this.mineTomeCustomization.getMinNums().get(indexOfEntity)) + this.mineTomeCustomization.getMinNums().get(indexOfEntity);
 
+                Mine mine = new Mine(i, material, 0, targetNumber);
+                tome = mine.applyQuest(tome);
             } else if (questType instanceof Slayer){
                 EntityType entityType = this.slayerTomeCustomization.getEntities().get(random.nextInt(this.slayerTomeCustomization.getEntities().size()));
                 int indexOfEntity = this.slayerTomeCustomization.getEntities().indexOf(entityType);

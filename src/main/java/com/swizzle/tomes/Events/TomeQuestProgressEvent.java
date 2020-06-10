@@ -1,12 +1,16 @@
 package com.swizzle.tomes.Events;
 
+import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
 import com.swizzle.tomes.TomeObject;
+import com.swizzle.tomes.TomeTypes.Tome;
 import com.swizzle.tomes.Tomes;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +20,9 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class TomeQuestProgressEvent implements Listener {
+
+    private NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
+    private NamespacedKey numberOfQuestsKey = new NamespacedKey(Tomes.getInstance(), "NumberOfQuests");
 
     //Slayer Progress
     @EventHandler
@@ -33,9 +40,6 @@ public class TomeQuestProgressEvent implements Listener {
                         continue;
                     }
                 }
-
-                NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
-                NamespacedKey numberOfQuestsKey = new NamespacedKey(Tomes.getInstance(), "NumberOfQuests");
 
                 ArrayList<ItemStack> tomes = new ArrayList<>();
                 ArrayList<Integer> questIndexs = new ArrayList<>();
@@ -68,6 +72,9 @@ public class TomeQuestProgressEvent implements Listener {
 
                     ItemMeta tomeMeta = item.getItemMeta();
 
+                    System.out.println(EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
+                    System.out.println();
+                    System.out.println();
                     Slayer slayer = new Slayer(questIndex, EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER));
                     //slayer.parseIntoObject(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER), EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
 
@@ -77,10 +84,70 @@ public class TomeQuestProgressEvent implements Listener {
 
                     System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
-                    TomeObject.checkIfTomeIsComplete(item);
+                    Tome.checkIfTomeIsComplete(item);
                 }
                 //Entity Will Die
             }
         }
+    }
+
+    //Mine Progress
+    @EventHandler
+    public void onBlockBreakEvent(BlockBreakEvent e){
+        Player player = e.getPlayer();
+        Inventory inventory = player.getInventory();
+
+        ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+        for (ItemStack item : inventory.getContents()){
+            if (item != null) {
+                items.add(item);
+            } else {
+                continue;
+            }
+        }
+
+
+        ArrayList<ItemStack> tomes = new ArrayList<>();
+        ArrayList<Integer> questIndexs = new ArrayList<>();
+        //Itterate through all items
+        for (int i = 0; i < items.size(); i++){
+            //If the item IS a tome
+            if (items.get(i).getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 0){
+                //Get the number of quests on it
+                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(numberOfQuestsKey, PersistentDataType.INTEGER);
+                Mine throwawayInstance = new Mine(0, null, 0, 0);
+                //For loop to itterate through each possible quest index
+                for (int j = 0; j < numberOfQuestsOnTome; j++){
+                    NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+j);
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                        tomes.add(items.get(i));
+                        questIndexs.add(j);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < tomes.size(); i++){
+            //A list of all the MINE tomes
+            ItemStack item = tomes.get(i);
+            int questIndex = questIndexs.get(i);
+
+            NamespacedKey questCurrentKey = new NamespacedKey(Tomes.getInstance(), "MineCurrent"+questIndex);
+            NamespacedKey questTargetKey = new NamespacedKey(Tomes.getInstance(), "MineTarget"+questIndex);
+            NamespacedKey questTargetEntity = new NamespacedKey(Tomes.getInstance(), "MineMaterial"+questIndex);
+
+            ItemMeta tomeMeta = item.getItemMeta();
+
+            Mine mine = new Mine(questIndex, Material.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER));
+
+            if (e.getBlock().getBlockData().getMaterial().equals(mine.getMaterial())){
+                mine.incrementCurrentMineCount(1, item);
+            }
+
+            System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
+
+            Tome.checkIfTomeIsComplete(item);
+        }
+        //Entity Will Die
     }
 }

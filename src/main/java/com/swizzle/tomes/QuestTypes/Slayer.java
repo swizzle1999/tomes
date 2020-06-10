@@ -24,12 +24,19 @@ public class Slayer implements IQuest {
 
     private int questIndex;
 
-    public NamespacedKey slayerTargetKey;
-    public NamespacedKey slayerCurrentKey;
-    public NamespacedKey slayerTargetEntity;
-    public NamespacedKey slayerCompletedKey;
+    //These are instance variables
+    //They are appended with the index that the quest sits at in the tome
+    private NamespacedKey slayerTargetKey;
+    private NamespacedKey slayerCurrentKey;
+    private NamespacedKey slayerTargetEntity;
+    private NamespacedKey slayerCompletedKey;
 
-    private ArrayList<EntityType> entityTypes;// = new ArrayList<EntityType>(Arrays.asList(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.CREEPER, EntityType.SPIDER, EntityType.ENDERMAN));
+    //These are for other classes to use so that there is no need to re create keys constantly
+    public static final NamespacedKey slayerTargetKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerTarget");
+    public static final NamespacedKey slayerCurrentKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent");
+    public static final NamespacedKey slayerTargetEntityKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType");
+    public static final NamespacedKey slayerCompletedKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerCompleted");
+
 
     //Variables that get parsed from book into this class
     private int currentMobCount;
@@ -48,10 +55,11 @@ public class Slayer implements IQuest {
         //So the quest index for this quest would then be 1. It basically adjusts the keys below so they look in the correct place
         //Also allows there to be multiple of the same quest type on the same book. Just some extra flexability really
         this.questIndex = questIndex;
-        this.slayerTargetKey = new NamespacedKey(Tomes.getInstance(), "SlayerTarget"+questIndex);
-        this.slayerCurrentKey = slayerCurrentKey = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent"+questIndex);
-        this.slayerTargetEntity = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType"+questIndex);
-        this.slayerCompletedKey = new NamespacedKey(Tomes.getInstance(), "SlayerCompleted"+questIndex);
+        this.slayerTargetKey = new NamespacedKey(Tomes.getInstance(), Slayer.slayerTargetKeyStatic.getKey()+questIndex);//new NamespacedKey(Tomes.getInstance(), "SlayerTarget"+questIndex);
+        this.slayerCurrentKey = new NamespacedKey(Tomes.getInstance(), Slayer.slayerCurrentKeyStatic.getKey()+questIndex);//"SlayerCurrent"+questIndex
+        this.slayerTargetEntity = new NamespacedKey(Tomes.getInstance(), Slayer.slayerTargetEntityKeyStatic.getKey()+questIndex);//"SlayerEntityType"+questIndex
+        this.slayerCompletedKey = new NamespacedKey(Tomes.getInstance(), Slayer.slayerCompletedKeyStatic.getKey()+questIndex);//"SlayerCompleted"+questIndex
+
     }
 
     public void incrementCurrentMobCount(int incrementAmmount, ItemStack book){
@@ -139,11 +147,6 @@ public class Slayer implements IQuest {
         return loreText;
     };
 
-    public EntityType pickRandomMob(){
-        Random random = new Random();
-        return entityTypes.get(random.nextInt(entityTypes.size()));
-    }
-
     @Override
     public String getQuestName(){
         return questName;
@@ -151,6 +154,22 @@ public class Slayer implements IQuest {
 
     public EntityType getEntityType(){
         return this.entityType;
+    }
+
+    public NamespacedKey getSlayerTargetKey() {
+        return slayerTargetKey;
+    }
+
+    public NamespacedKey getSlayerCurrentKey() {
+        return slayerCurrentKey;
+    }
+
+    public NamespacedKey getSlayerTargetEntity() {
+        return slayerTargetEntity;
+    }
+
+    public NamespacedKey getSlayerCompletedKey() {
+        return slayerCompletedKey;
     }
 
 }

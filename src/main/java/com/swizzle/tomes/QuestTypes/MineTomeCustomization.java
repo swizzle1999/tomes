@@ -1,24 +1,24 @@
 package com.swizzle.tomes.QuestTypes;
 
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class SlayerTomeCustomization {
+public class MineTomeCustomization {
 
-    private ArrayList<EntityType> entities;
+    private ArrayList<Material> materials;
     private ArrayList<Integer> minNums;
     private ArrayList<Integer> maxNums;
 
-    public SlayerTomeCustomization(ArrayList<EntityType> entities, ArrayList<Integer> minNums, ArrayList<Integer> maxNums){
-        this.entities = entities;
+    public MineTomeCustomization(ArrayList<Material> materials, ArrayList<Integer> minNums, ArrayList<Integer> maxNums){
+        this.materials = materials;
         this.minNums = minNums;
         this.maxNums = maxNums;
     }
 
-    public ArrayList<EntityType> getEntities() {
-        return entities;
+    public ArrayList<Material> getMaterials() {
+        return materials;
     }
 
     public ArrayList<Integer> getMinNums() {

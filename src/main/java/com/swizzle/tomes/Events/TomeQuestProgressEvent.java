@@ -132,10 +132,17 @@ public class TomeQuestProgressEvent implements Listener {
                 if (!previouslyMinedBlocks.contains(e.getBlock())){
                     mine.incrementCurrentMineCount(1, item);
                     previouslyMinedBlocks.add(e.getBlock());
+
+                    //Start removing blocks from the list after it is 100 blocks long to stop excessive memory usage.
+                    //Could be removed later if it was found to not be that heavy on memory usage
+                    if (previouslyMinedBlocks.size() >= 100){
+                        previouslyMinedBlocks.remove(0);
+                    }
                 }
             }
 
-            System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
+            //Just a debug statement
+            //System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
             Tome.checkIfTomeIsComplete(item);
         }

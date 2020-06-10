@@ -43,7 +43,7 @@ public abstract class Tome {
             }
 
         }
-        System.out.println(rewardsArray);
+        //System.out.println(rewardsArray);
 
         return rewardsArray;
     };

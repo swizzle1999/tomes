@@ -6,6 +6,7 @@ import com.swizzle.tomes.TomeTypes.Tome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,8 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class TomeQuestProgressEvent implements Listener {
+
+    private ArrayList<Block> previouslyMinedBlocks = new ArrayList<Block>();
 
     //Slayer Progress
     @EventHandler
@@ -125,7 +128,11 @@ public class TomeQuestProgressEvent implements Listener {
             Mine mine = new Mine(questIndex, Material.valueOf(tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getMineTargetMaterialKey(), PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getMineCurrentKey(), PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getMineTargetKey(), PersistentDataType.INTEGER));
 
             if (e.getBlock().getBlockData().getMaterial().equals(mine.getMaterial())){
-                mine.incrementCurrentMineCount(1, item);
+
+                if (!previouslyMinedBlocks.contains(e.getBlock())){
+                    mine.incrementCurrentMineCount(1, item);
+                    previouslyMinedBlocks.add(e.getBlock());
+                }
             }
 
             System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));

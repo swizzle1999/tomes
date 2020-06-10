@@ -1,15 +1,8 @@
 package com.swizzle.tomes.QuestTypes;
 
-import com.swizzle.tomes.TomeObject;
-import com.swizzle.tomes.TomeTypes.DirtTome;
-import com.swizzle.tomes.TomeTypes.StoneTome;
-import com.swizzle.tomes.TomeTypes.Tome;
-import com.swizzle.tomes.TomeTypes.WoodTome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -17,7 +10,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class Slayer implements IQuest {
     private final String questName = "Slayer";
@@ -28,14 +20,14 @@ public class Slayer implements IQuest {
     //They are appended with the index that the quest sits at in the tome
     private NamespacedKey slayerTargetKey;
     private NamespacedKey slayerCurrentKey;
-    private NamespacedKey slayerTargetEntity;
+    private NamespacedKey slayerTargetEntityKey;
     private NamespacedKey slayerCompletedKey;
 
     //These are for other classes to use so that there is no need to re create keys constantly
-    public static final NamespacedKey slayerTargetKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerTarget");
-    public static final NamespacedKey slayerCurrentKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent");
-    public static final NamespacedKey slayerTargetEntityKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType");
-    public static final NamespacedKey slayerCompletedKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerCompleted");
+    private static final NamespacedKey slayerTargetKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerTarget");
+    private static final NamespacedKey slayerCurrentKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent");
+    private static final NamespacedKey slayerTargetEntityKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType");
+    private static final NamespacedKey slayerCompletedKeyStatic = new NamespacedKey(Tomes.getInstance(), "SlayerCompleted");
 
 
     //Variables that get parsed from book into this class
@@ -57,7 +49,7 @@ public class Slayer implements IQuest {
         this.questIndex = questIndex;
         this.slayerTargetKey = new NamespacedKey(Tomes.getInstance(), Slayer.slayerTargetKeyStatic.getKey()+questIndex);//new NamespacedKey(Tomes.getInstance(), "SlayerTarget"+questIndex);
         this.slayerCurrentKey = new NamespacedKey(Tomes.getInstance(), Slayer.slayerCurrentKeyStatic.getKey()+questIndex);//"SlayerCurrent"+questIndex
-        this.slayerTargetEntity = new NamespacedKey(Tomes.getInstance(), Slayer.slayerTargetEntityKeyStatic.getKey()+questIndex);//"SlayerEntityType"+questIndex
+        this.slayerTargetEntityKey = new NamespacedKey(Tomes.getInstance(), Slayer.slayerTargetEntityKeyStatic.getKey()+questIndex);//"SlayerEntityType"+questIndex
         this.slayerCompletedKey = new NamespacedKey(Tomes.getInstance(), Slayer.slayerCompletedKeyStatic.getKey()+questIndex);//"SlayerCompleted"+questIndex
 
     }
@@ -92,7 +84,7 @@ public class Slayer implements IQuest {
 
         tomeMeta.getPersistentDataContainer().set(slayerCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
         tomeMeta.getPersistentDataContainer().set(slayerTargetKey, PersistentDataType.INTEGER, this.targetMobCount);
-        tomeMeta.getPersistentDataContainer().set(slayerTargetEntity, PersistentDataType.STRING, this.entityType.toString());
+        tomeMeta.getPersistentDataContainer().set(slayerTargetEntityKey, PersistentDataType.STRING, this.entityType.toString());
         tomeMeta.getPersistentDataContainer().set(slayerCompletedKey, PersistentDataType.INTEGER, 0);
 
         List<String> loreTextArray = tomeMeta.getLore();
@@ -121,7 +113,7 @@ public class Slayer implements IQuest {
 
         tomeMeta.getPersistentDataContainer().set(slayerCurrentKey, PersistentDataType.INTEGER, this.currentMobCount);
         tomeMeta.getPersistentDataContainer().set(slayerTargetKey, PersistentDataType.INTEGER, this.targetMobCount);
-        tomeMeta.getPersistentDataContainer().set(slayerTargetEntity, PersistentDataType.STRING, this.entityType.toString());
+        tomeMeta.getPersistentDataContainer().set(slayerTargetEntityKey, PersistentDataType.STRING, this.entityType.toString());
 
         List<String> tomeLore = tomeMeta.getLore();
 
@@ -164,12 +156,27 @@ public class Slayer implements IQuest {
         return slayerCurrentKey;
     }
 
-    public NamespacedKey getSlayerTargetEntity() {
-        return slayerTargetEntity;
+    public NamespacedKey getSlayerTargetEntityKey() {
+        return slayerTargetEntityKey;
     }
 
     public NamespacedKey getSlayerCompletedKey() {
         return slayerCompletedKey;
     }
 
+    public static NamespacedKey getSlayerTargetKeyStatic() {
+        return slayerTargetKeyStatic;
+    }
+
+    public static NamespacedKey getSlayerCurrentKeyStatic() {
+        return slayerCurrentKeyStatic;
+    }
+
+    public static NamespacedKey getSlayerTargetEntityKeyStatic() {
+        return slayerTargetEntityKeyStatic;
+    }
+
+    public static NamespacedKey getSlayerCompletedKeyStatic() {
+        return slayerCompletedKeyStatic;
+    }
 }

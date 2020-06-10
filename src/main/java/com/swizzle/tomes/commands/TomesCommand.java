@@ -1,6 +1,5 @@
 package com.swizzle.tomes.commands;
 
-import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.TomeTypes.Tome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Bukkit;
@@ -24,10 +23,10 @@ public class TomesCommand implements CommandExecutor {
             if (args.length == 0){
                 Inventory gui = Bukkit.createInventory(player, 9, "Tomes");
 
-                ItemStack[] menuItems = new ItemStack[TomeObject.tomes.size()];
+                ItemStack[] menuItems = new ItemStack[Tome.getTomes().size()];
 
                 int counter = 0;
-                for (Tome tome : TomeObject.tomes){
+                for (Tome tome : Tome.getTomes()){
                     ItemStack newTome = new ItemStack(Material.BOOK);
 
                     ItemMeta newTomeMeta = newTome.getItemMeta();

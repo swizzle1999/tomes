@@ -1,7 +1,6 @@
 package com.swizzle.tomes.TomeTypes;
 
 import com.swizzle.tomes.QuestTypes.*;
-import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,7 +11,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -92,7 +90,7 @@ public class DirtTome extends Tome{
         ItemStack tome = new ItemStack(Material.BOOK);
         ItemMeta tomeMeta = tome.getItemMeta();
 
-        tomeMeta.getPersistentDataContainer().set(TomeObject.numberOfQuestsKey, PersistentDataType.INTEGER, numberOfQuests);
+        tomeMeta.getPersistentDataContainer().set(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER, numberOfQuests);
 
         tome.setItemMeta(tomeMeta);
 
@@ -100,10 +98,10 @@ public class DirtTome extends Tome{
             IQuest questType = chooseRandomQuest();
 
             tomeMeta = tome.getItemMeta();
-            NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+i);
-            tomeMeta.getPersistentDataContainer().set(questTypeKey, PersistentDataType.STRING, questType.getQuestName());
 
-            tomeMeta.getPersistentDataContainer().set(TomeObject.tomeTypeKey, PersistentDataType.STRING, this.tomeVariableName);
+            tomeMeta.getPersistentDataContainer().set(Tome.getQuestTypeKey(i), PersistentDataType.STRING, questType.getQuestName());
+
+            tomeMeta.getPersistentDataContainer().set(Tome.getTomeTypeKey(), PersistentDataType.STRING, this.tomeVariableName);
 
             tome.setItemMeta(tomeMeta);
 
@@ -116,6 +114,7 @@ public class DirtTome extends Tome{
 
                 Mine mine = new Mine(i, material, 0, targetNumber);
                 tome = mine.applyQuest(tome);
+
             } else if (questType instanceof Slayer){
                 EntityType entityType = this.slayerTomeCustomization.getEntities().get(random.nextInt(this.slayerTomeCustomization.getEntities().size()));
                 int indexOfEntity = this.slayerTomeCustomization.getEntities().indexOf(entityType);
@@ -131,8 +130,8 @@ public class DirtTome extends Tome{
         tomeMeta.setDisplayName(this.tomeDisplayName);
 
 
-        tomeMeta.getPersistentDataContainer().set(TomeObject.tomeKey, PersistentDataType.INTEGER, 1);
-        tomeMeta.getPersistentDataContainer().set(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER, 0);
+        tomeMeta.getPersistentDataContainer().set(Tome.getTomeKey(), PersistentDataType.INTEGER, 1);
+        tomeMeta.getPersistentDataContainer().set(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER, 0);
 
         tome.setItemMeta(tomeMeta);
 

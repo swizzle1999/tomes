@@ -3,8 +3,6 @@ package com.swizzle.tomes.TomeTypes;
 import com.swizzle.tomes.QuestTypes.IQuest;
 import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
-import com.swizzle.tomes.QuestTypes.SlayerTomeCustomization;
-import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,9 +11,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Tome {
+
+    //An array of all possible tomes
+    private static final ArrayList<Tome> tomes = new ArrayList<Tome>(Arrays.asList(new DirtTome(), new WoodTome(), new StoneTome()));
+
+    //Generic Tome Keys
+    private static final NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
+    private static final NamespacedKey tomeTypeKey = new NamespacedKey(Tomes.getInstance(), "TomeType");
+    private static final NamespacedKey tomeNumberOfQuestsKey = new NamespacedKey(Tomes.getInstance(), "TomeNumberOfQuests");
+    private static final NamespacedKey tomeCompleteKey = new NamespacedKey(Tomes.getInstance(), "TomeComplete");
+
     public abstract String getTomeVariableName();
     public abstract String getTomeDisplayName();
     public abstract int getNumberOfQuests();
@@ -48,7 +57,7 @@ public abstract class Tome {
     public static void checkIfTomeIsComplete(ItemStack tome){
         ItemMeta tomeMeta = tome.getItemMeta();
 
-        int numberOfQuests = tomeMeta.getPersistentDataContainer().get(TomeObject.numberOfQuestsKey, PersistentDataType.INTEGER);
+        int numberOfQuests = tomeMeta.getPersistentDataContainer().get(tomeNumberOfQuestsKey, PersistentDataType.INTEGER);
 
         int numberOfCompleteQuests = 0;
         for (int i = 0; i < numberOfQuests; i++){
@@ -83,7 +92,7 @@ public abstract class Tome {
         System.out.println(numberOfCompleteQuests);
         System.out.println(numberOfQuests);
         if (numberOfCompleteQuests == numberOfQuests){
-            tomeMeta.getPersistentDataContainer().set(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER, 1);
+            tomeMeta.getPersistentDataContainer().set(tomeCompleteKey, PersistentDataType.INTEGER, 1);
 
             List<String> completedTombLore = new ArrayList<>();
             completedTombLore.add("COMPLETE!");
@@ -91,5 +100,29 @@ public abstract class Tome {
 
             tome.setItemMeta(tomeMeta);
         }
+    }
+
+    public static NamespacedKey getQuestTypeKey(int index){
+        return new NamespacedKey(Tomes.getInstance(), "QuestType"+index);
+    }
+
+    public static ArrayList<Tome> getTomes() {
+        return tomes;
+    }
+
+    public static NamespacedKey getTomeKey() {
+        return tomeKey;
+    }
+
+    public static NamespacedKey getTomeTypeKey() {
+        return tomeTypeKey;
+    }
+
+    public static NamespacedKey getTomeNumberOfQuestsKey() {
+        return tomeNumberOfQuestsKey;
+    }
+
+    public static NamespacedKey getTomeCompleteKey() {
+        return tomeCompleteKey;
     }
 }

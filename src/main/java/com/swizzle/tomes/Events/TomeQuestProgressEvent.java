@@ -2,7 +2,6 @@ package com.swizzle.tomes.Events;
 
 import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
-import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.TomeTypes.Tome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Material;
@@ -20,9 +19,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 
 public class TomeQuestProgressEvent implements Listener {
-
-    private NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
-    private NamespacedKey numberOfQuestsKey = new NamespacedKey(Tomes.getInstance(), "NumberOfQuests");
 
     //Slayer Progress
     @EventHandler
@@ -46,14 +42,13 @@ public class TomeQuestProgressEvent implements Listener {
                 //Itterate through all items
                 for (int i = 0; i < items.size(); i++){
                     //If the item IS a tome
-                    if (items.get(i).getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 0){
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().has(Tome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
                         //Get the number of quests on it
-                        int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(numberOfQuestsKey, PersistentDataType.INTEGER);
+                        int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
                         Slayer throwawayInstance = new Slayer(0, null, 0, 0);
                         //For loop to itterate through each possible quest index
                         for (int j = 0; j < numberOfQuestsOnTome; j++){
-                            NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+j);
-                            if (items.get(i).getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                            if (items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
                                 tomes.add(items.get(i));
                                 questIndexs.add(j);
                             }
@@ -66,17 +61,10 @@ public class TomeQuestProgressEvent implements Listener {
                     ItemStack item = tomes.get(i);
                     int questIndex = questIndexs.get(i);
 
-                    NamespacedKey questCurrentKey = new NamespacedKey(Tomes.getInstance(), "SlayerCurrent"+questIndex);
-                    NamespacedKey questTargetKey = new NamespacedKey(Tomes.getInstance(), "SlayerTarget"+questIndex);
-                    NamespacedKey questTargetEntity = new NamespacedKey(Tomes.getInstance(), "SlayerEntityType"+questIndex);
-
                     ItemMeta tomeMeta = item.getItemMeta();
 
-                    System.out.println(EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
-                    System.out.println();
-                    System.out.println();
-                    Slayer slayer = new Slayer(questIndex, EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER));
-                    //slayer.parseIntoObject(tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER), EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)));
+                    Slayer throwAwayInstance = new Slayer(questIndex, null, 0, 0);
+                    Slayer slayer = new Slayer(questIndex, EntityType.valueOf(tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getSlayerTargetEntityKey(), PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getSlayerCurrentKey(), PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getSlayerTargetKey(), PersistentDataType.INTEGER));
 
                     if (e.getEntityType().equals(slayer.getEntityType())){
                         slayer.incrementCurrentMobCount(1, item);
@@ -112,14 +100,13 @@ public class TomeQuestProgressEvent implements Listener {
         //Itterate through all items
         for (int i = 0; i < items.size(); i++){
             //If the item IS a tome
-            if (items.get(i).getItemMeta().getPersistentDataContainer().has(tomeKey, PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(TomeObject.tomeCompleteKey, PersistentDataType.INTEGER) == 0){
+            if (items.get(i).getItemMeta().getPersistentDataContainer().has(Tome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
                 //Get the number of quests on it
-                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(numberOfQuestsKey, PersistentDataType.INTEGER);
+                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
                 Mine throwawayInstance = new Mine(0, null, 0, 0);
                 //For loop to itterate through each possible quest index
                 for (int j = 0; j < numberOfQuestsOnTome; j++){
-                    NamespacedKey questTypeKey = new NamespacedKey(Tomes.getInstance(), "QuestType"+j);
-                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(questTypeKey, PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
                         tomes.add(items.get(i));
                         questIndexs.add(j);
                     }
@@ -132,13 +119,10 @@ public class TomeQuestProgressEvent implements Listener {
             ItemStack item = tomes.get(i);
             int questIndex = questIndexs.get(i);
 
-            NamespacedKey questCurrentKey = new NamespacedKey(Tomes.getInstance(), "MineCurrent"+questIndex);
-            NamespacedKey questTargetKey = new NamespacedKey(Tomes.getInstance(), "MineTarget"+questIndex);
-            NamespacedKey questTargetEntity = new NamespacedKey(Tomes.getInstance(), "MineMaterial"+questIndex);
-
             ItemMeta tomeMeta = item.getItemMeta();
 
-            Mine mine = new Mine(questIndex, Material.valueOf(tomeMeta.getPersistentDataContainer().get(questTargetEntity, PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(questCurrentKey, PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(questTargetKey, PersistentDataType.INTEGER));
+            Mine throwAwayInstance = new Mine(questIndex, null, 0, 0);
+            Mine mine = new Mine(questIndex, Material.valueOf(tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getMineTargetMaterialKey(), PersistentDataType.STRING)), tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getMineCurrentKey(), PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getMineTargetKey(), PersistentDataType.INTEGER));
 
             if (e.getBlock().getBlockData().getMaterial().equals(mine.getMaterial())){
                 mine.incrementCurrentMineCount(1, item);

@@ -12,4 +12,3 @@ com\swizzle\tomes\QuestTypes\IQuest.class
 com\swizzle\tomes\TomeTypes\WoodTome.class
 com\swizzle\tomes\Events\TomeClickEvent.class
 com\swizzle\tomes\QuestTypes\SlayerTomeCustomization.class
-com\swizzle\tomes\TomeObject.class

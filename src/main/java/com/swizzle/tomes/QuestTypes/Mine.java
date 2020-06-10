@@ -1,10 +1,8 @@
 package com.swizzle.tomes.QuestTypes;
 
-import com.swizzle.tomes.TomeObject;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -12,7 +10,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class Mine implements IQuest {
     private final String questName = "Mine";
@@ -27,10 +24,10 @@ public class Mine implements IQuest {
     private NamespacedKey mineCompletedKey;
 
     //These are for other classes to use so that there is no need to re create keys constantly
-    public static final NamespacedKey mineTargetKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineTarget");
-    public static final NamespacedKey mineCurrentKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineCurrent");
-    public static final NamespacedKey mineTargetMaterialKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineMaterial");
-    public static final NamespacedKey mineCompletedKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineCompleted");
+    private static final NamespacedKey mineTargetKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineTarget");
+    private static final NamespacedKey mineCurrentKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineCurrent");
+    private static final NamespacedKey mineTargetMaterialKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineMaterial");
+    private static final NamespacedKey mineCompletedKeyStatic = new NamespacedKey(Tomes.getInstance(), "MineCompleted");
 
     //Variables that get parsed from book into this class
     private int currentMineCount;
@@ -165,4 +162,19 @@ public class Mine implements IQuest {
         return mineCompletedKey;
     }
 
+    public static NamespacedKey getMineTargetKeyStatic() {
+        return mineTargetKeyStatic;
+    }
+
+    public static NamespacedKey getMineCurrentKeyStatic() {
+        return mineCurrentKeyStatic;
+    }
+
+    public static NamespacedKey getMineTargetMaterialKeyStatic() {
+        return mineTargetMaterialKeyStatic;
+    }
+
+    public static NamespacedKey getMineCompletedKeyStatic() {
+        return mineCompletedKeyStatic;
+    }
 }

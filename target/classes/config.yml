@@ -1,5 +1,6 @@
 tomes:
   dirt:
+    cost: 10
     rewards:
       items:
       weights:
@@ -42,6 +43,7 @@ tomes:
         "3": 50
         "4": 20
   wood:
+    cost: 20
     rewards:
       items:
       weights:
@@ -84,6 +86,7 @@ tomes:
         "3": 50
         "4": 20
   stone:
+    cost: 30
     rewards:
       items:
       weights:

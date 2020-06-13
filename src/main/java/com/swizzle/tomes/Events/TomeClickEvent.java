@@ -1,6 +1,8 @@
 package com.swizzle.tomes.Events;
 
 import com.swizzle.tomes.TomeTypes.Tome;
+import com.swizzle.tomes.Tomes;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,7 +16,13 @@ public class TomeClickEvent implements Listener {
                 //Check which tome was clicked
                 for (Tome tome : Tome.getTomes()){
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(tome.getTomeDisplayName())){
-                        e.getWhoClicked().getInventory().addItem(tome.giveBook());
+                        if (((Player)e.getWhoClicked()).getLevel() >= Tomes.getInstance().getConfig().getInt("tomes." + tome.getTomeVariableName() + ".cost")){
+                            ((Player)e.getWhoClicked()).setLevel(((Player)e.getWhoClicked()).getLevel() - Tomes.getInstance().getConfig().getInt("tomes." + tome.getTomeVariableName() + ".cost"));
+                            e.getWhoClicked().getInventory().addItem(tome.giveBook());
+                        } else {
+                            e.getWhoClicked().sendMessage("Sorry, You do not have the required levels to purchase this tome");
+                        }
+
                     }
                 }
             }

@@ -75,53 +75,59 @@ public class TomesCommand implements CommandExecutor {
                 gui.setContents(menuItems);
                 player.openInventory(gui);
             } else {
-                if (args[0].equalsIgnoreCase("rewards")) {
-                    if (args[1].equalsIgnoreCase("add")) {
-                        if (args[3] == null){
-                            System.out.println("No weight argument.");
-                            return false;
-                        }
-                        ItemStack newReward = player.getInventory().getItemInMainHand();
 
-                        int index = 0;
+                String editTomesPermission = "tomes.editTomes";
+                if (player.hasPermission(editTomesPermission)) {
+                    if (args[0].equalsIgnoreCase("rewards")) {
+                        if (args[1].equalsIgnoreCase("add")) {
+                            if (args[3] == null) {
+                                System.out.println("No weight argument.");
+                                return false;
+                            }
+                            ItemStack newReward = player.getInventory().getItemInMainHand();
 
-                        ConfigurationSection configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.items");
-                        if (configSection == null){
-                            System.out.println("Configuration Section Is Empty");
-                            index = 0;
-                        } else {
-                            for (String key : configSection.getKeys(false)){
-                                try {
-                                    //Adding one to the index so as to not overwrite the last index
-                                    index = Integer.parseInt(key) + 1;
-                                } catch (NumberFormatException e){
-                                    System.out.println("A key inside of the loot table is not parseable as an integer");
+                            int index = 0;
+
+                            ConfigurationSection configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.items");
+                            if (configSection == null) {
+                                System.out.println("Configuration Section Is Empty");
+                                index = 0;
+                            } else {
+                                for (String key : configSection.getKeys(false)) {
+                                    try {
+                                        //Adding one to the index so as to not overwrite the last index
+                                        index = Integer.parseInt(key) + 1;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("A key inside of the loot table is not parseable as an integer");
+                                    }
                                 }
                             }
-                        }
 
-                        Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.items." + String.valueOf(index), newReward);
+                            Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.items." + String.valueOf(index), newReward);
 
-                        configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.weights");
-                        if (configSection == null){
-                            System.out.println("Configuration Section Is Empty");
-                            index = 0;
-                        } else {
-                            for (String key : configSection.getKeys(false)){
-                                try {
-                                    //Adding one to the index so as to not overwrite the last index
-                                    index = Integer.parseInt(key) + 1;
-                                } catch (NumberFormatException e){
-                                    System.out.println("A key inside of the loot table is not parseable as an integer");
+                            configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.weights");
+                            if (configSection == null) {
+                                System.out.println("Configuration Section Is Empty");
+                                index = 0;
+                            } else {
+                                for (String key : configSection.getKeys(false)) {
+                                    try {
+                                        //Adding one to the index so as to not overwrite the last index
+                                        index = Integer.parseInt(key) + 1;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("A key inside of the loot table is not parseable as an integer");
+                                    }
                                 }
                             }
+
+                            Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.weights." + String.valueOf(index), args[3]);
+
+                            Tomes.getInstance().saveConfig();
                         }
 
-                        Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.weights." + String.valueOf(index), args[3]);
-
-                        Tomes.getInstance().saveConfig();
                     }
-
+                } else {
+                    player.sendMessage("Sorry, You do not have the required permission (" + editTomesPermission + ")");
                 }
             }
         }

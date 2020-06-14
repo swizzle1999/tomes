@@ -1,5 +1,6 @@
 package com.swizzle.tomes.TomeTypes;
 
+import com.swizzle.tomes.QuestTypes.Fish;
 import com.swizzle.tomes.QuestTypes.IQuest;
 import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
@@ -85,12 +86,19 @@ public abstract class Tome {
                     if (tomeMeta.getPersistentDataContainer().get(mine.getMineCompletedKey(), PersistentDataType.INTEGER) != null && tomeMeta.getPersistentDataContainer().get(mine.getMineCompletedKey(), PersistentDataType.INTEGER) == 1){
                         numberOfCompleteQuests += 1;
                     }
+                case "fish":
+                    questCurrentKey = new NamespacedKey(Tomes.getInstance(), "FishCurrent"+i);
+                    questTargetKey = new NamespacedKey(Tomes.getInstance(), "FishTarget"+i);
+
+                    Fish fish = new Fish(i, 0, 0);
+
+                    if (tomeMeta.getPersistentDataContainer().get(fish.getFishCompletedKey(), PersistentDataType.INTEGER) != null && tomeMeta.getPersistentDataContainer().get(fish.getFishCompletedKey(), PersistentDataType.INTEGER) == 1){
+                        numberOfCompleteQuests += 1;
+                    }
 
             }
         }
 
-        System.out.println(numberOfCompleteQuests);
-        System.out.println(numberOfQuests);
         if (numberOfCompleteQuests == numberOfQuests){
             tomeMeta.getPersistentDataContainer().set(tomeCompleteKey, PersistentDataType.INTEGER, 1);
 

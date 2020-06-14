@@ -1,11 +1,14 @@
 com\swizzle\tomes\commands\TomesCommand.class
 com\swizzle\tomes\Events\TomeQuestProgressEvent.class
 com\swizzle\tomes\Events\TomeRightClickEvent.class
+com\swizzle\tomes\Utils\RandomNumberBetweenBounds.class
 com\swizzle\tomes\TomeTypes\DirtTome.class
 com\swizzle\tomes\QuestTypes\Mine.class
 com\swizzle\tomes\TomeTypes\StoneTome.class
 com\swizzle\tomes\QuestTypes\Slayer.class
 com\swizzle\tomes\Tomes.class
+com\swizzle\tomes\QuestTypes\Fish.class
+com\swizzle\tomes\QuestTypes\FishTomeCustomization.class
 com\swizzle\tomes\QuestTypes\MineTomeCustomization.class
 com\swizzle\tomes\TomeTypes\Tome.class
 com\swizzle\tomes\QuestTypes\IQuest.class

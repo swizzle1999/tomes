@@ -42,6 +42,11 @@ tomes:
         "2": 100
         "3": 50
         "4": 20
+    fish:
+      minNumbers:
+        "0": 1
+      maxNumbers:
+        "0": 200
   wood:
     cost: 20
     rewards:
@@ -85,6 +90,11 @@ tomes:
         "2": 100
         "3": 50
         "4": 20
+    fish:
+      minNumbers:
+        "0": 1
+      maxNumbers:
+        "0": 200
   stone:
     cost: 30
     rewards:
@@ -128,6 +138,11 @@ tomes:
         "2": 100
         "3": 50
         "4": 20
+    fish:
+      minNumbers:
+        "0": 1
+      maxNumbers:
+        "0": 200
 
 
 

@@ -2,6 +2,7 @@ package com.swizzle.tomes.TomeTypes;
 
 import com.swizzle.tomes.QuestTypes.*;
 import com.swizzle.tomes.Tomes;
+import com.swizzle.tomes.Utils.RandomNumberBetweenBounds;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,6 +24,7 @@ public class DirtTome extends Tome{
 
     private SlayerTomeCustomization slayerTomeCustomization;
     private MineTomeCustomization mineTomeCustomization;
+    private FishTomeCustomization fishTomeCustomization;
 
     public DirtTome(){
         //Slayer Section
@@ -68,6 +70,25 @@ public class DirtTome extends Tome{
 
         this.mineTomeCustomization = new MineTomeCustomization(materials, minNums, maxNums);
         this.availableQuests.add(new Mine(0, null, 0,0));
+
+        //Fish Section
+        minNums = new ArrayList<Integer>();
+        maxNums = new ArrayList<Integer>();
+
+        ConfigurationSection fishConfig = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + this.tomeVariableName + ".fish.minNumbers");
+        for (String key : fishConfig.getKeys(false)){
+            int minNum = Tomes.getInstance().getConfig().getInt("tomes." + this.tomeVariableName + ".fish.minNumbers."+key);
+            int maxNum = Tomes.getInstance().getConfig().getInt("tomes." + this.tomeVariableName + ".fish.maxNumbers."+key);
+
+            if (minNum == 0 || maxNum == 0){
+                System.out.println("ERROR CONFIGURATION IS WRONG SOMEWHERE");
+            }
+            minNums.add(minNum);
+            maxNums.add(maxNum);
+        }
+
+        this.fishTomeCustomization = new FishTomeCustomization(minNums, maxNums);
+        this.availableQuests.add(new Fish(0, 0, 0));
     }
 
     @Override
@@ -110,7 +131,7 @@ public class DirtTome extends Tome{
             if (questType instanceof Mine){
                 Material material = this.mineTomeCustomization.getMaterials().get(random.nextInt(this.mineTomeCustomization.getMaterials().size()));
                 int indexOfEntity = this.mineTomeCustomization.getMaterials().indexOf(material);
-                int targetNumber = random.nextInt(this.mineTomeCustomization.getMaxNums().get(indexOfEntity) - this.mineTomeCustomization.getMinNums().get(indexOfEntity)) + this.mineTomeCustomization.getMinNums().get(indexOfEntity);
+                int targetNumber = RandomNumberBetweenBounds.getRandomInt(this.mineTomeCustomization.getMinNums().get(indexOfEntity), this.mineTomeCustomization.getMaxNums().get(indexOfEntity));
 
                 Mine mine = new Mine(i, material, 0, targetNumber);
                 tome = mine.applyQuest(tome);
@@ -118,10 +139,15 @@ public class DirtTome extends Tome{
             } else if (questType instanceof Slayer){
                 EntityType entityType = this.slayerTomeCustomization.getEntities().get(random.nextInt(this.slayerTomeCustomization.getEntities().size()));
                 int indexOfEntity = this.slayerTomeCustomization.getEntities().indexOf(entityType);
-                int targetNumber = random.nextInt(this.slayerTomeCustomization.getMaxNums().get(indexOfEntity) - this.slayerTomeCustomization.getMinNums().get(indexOfEntity)) + this.slayerTomeCustomization.getMinNums().get(indexOfEntity);
+                int targetNumber = RandomNumberBetweenBounds.getRandomInt(this.slayerTomeCustomization.getMinNums().get(indexOfEntity), this.slayerTomeCustomization.getMaxNums().get(indexOfEntity));
 
                 Slayer slayer = new Slayer(i, entityType, 0, targetNumber);
                 tome = slayer.applyQuest(tome);
+            } else if (questType instanceof Fish){
+                int targetNumber = RandomNumberBetweenBounds.getRandomInt(this.fishTomeCustomization.getMinNums().get(0), this.fishTomeCustomization.getMaxNums().get(0));
+
+                Fish fish = new Fish(i, 0, targetNumber);
+                tome = fish.applyQuest(tome);
             }
         }
 

@@ -1,5 +1,6 @@
 package com.swizzle.tomes.Events;
 
+import com.swizzle.tomes.QuestTypes.Fish;
 import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
 import com.swizzle.tomes.TomeTypes.Tome;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -143,6 +145,61 @@ public class TomeQuestProgressEvent implements Listener {
 
             //Just a debug statement
             //System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
+
+            Tome.checkIfTomeIsComplete(item);
+        }
+        //Entity Will Die
+    }
+
+
+    //Fish Progress
+    @EventHandler
+    public void onPlayerCatchFish(PlayerFishEvent e){
+        Player player = e.getPlayer();
+        Inventory inventory = player.getInventory();
+
+        ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+        for (ItemStack item : inventory.getContents()){
+            if (item != null) {
+                items.add(item);
+            } else {
+                continue;
+            }
+        }
+
+
+        ArrayList<ItemStack> tomes = new ArrayList<>();
+        ArrayList<Integer> questIndexs = new ArrayList<>();
+        //Itterate through all items
+        for (int i = 0; i < items.size(); i++){
+            //If the item IS a tome
+            if (items.get(i).getItemMeta().getPersistentDataContainer().has(Tome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
+                //Get the number of quests on it
+                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
+                Fish throwawayInstance = new com.swizzle.tomes.QuestTypes.Fish(0, 0, 0);
+                //For loop to itterate through each possible quest index
+                for (int j = 0; j < numberOfQuestsOnTome; j++){
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                        tomes.add(items.get(i));
+                        questIndexs.add(j);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < tomes.size(); i++){
+            //A list of all the FISH tomes
+            ItemStack item = tomes.get(i);
+            int questIndex = questIndexs.get(i);
+
+            ItemMeta tomeMeta = item.getItemMeta();
+
+            Fish throwAwayInstance = new Fish(questIndex, 0, 0);
+            Fish fish = new Fish(questIndex, tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getFishCurrentKey(), PersistentDataType.INTEGER), tomeMeta.getPersistentDataContainer().get(throwAwayInstance.getFishTargetKey(), PersistentDataType.INTEGER));
+
+            if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH){
+                fish.incrementCurrentFishCount(1, item);
+            }
 
             Tome.checkIfTomeIsComplete(item);
         }

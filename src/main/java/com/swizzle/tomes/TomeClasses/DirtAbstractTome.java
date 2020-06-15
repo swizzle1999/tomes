@@ -1,10 +1,9 @@
-package com.swizzle.tomes.TomeTypes;
+package com.swizzle.tomes.TomeClasses;
 
 import com.swizzle.tomes.QuestTypes.*;
 import com.swizzle.tomes.Tomes;
 import com.swizzle.tomes.Utils.RandomNumberBetweenBounds;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -15,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class WoodTome extends Tome{
-    private final String tomeVariableName = "wood";
-    private final String tomeDisplayName = "Wood Tome";
-    private final int numberOfQuests = 2;
+public class DirtAbstractTome extends AbstractTome {
+    private final String tomeVariableName = "dirt";
+    private final String tomeDisplayName = "Dirt Tome";
+    private final int numberOfQuests = 1;
 
     private List<IQuest> availableQuests = new ArrayList<IQuest>();
 
@@ -26,7 +25,7 @@ public class WoodTome extends Tome{
     private MineTomeCustomization mineTomeCustomization;
     private FishTomeCustomization fishTomeCustomization;
 
-    public WoodTome(){
+    public DirtAbstractTome(){
         //Slayer Section
         ArrayList<EntityType> entities = new ArrayList<EntityType>();
         ArrayList<Integer> minNums = new ArrayList<Integer>();
@@ -91,7 +90,6 @@ public class WoodTome extends Tome{
         this.availableQuests.add(new Fish(0, 0, 0));
     }
 
-
     @Override
     public String getTomeVariableName() {
         return tomeVariableName;
@@ -112,7 +110,7 @@ public class WoodTome extends Tome{
         ItemStack tome = new ItemStack(Material.BOOK);
         ItemMeta tomeMeta = tome.getItemMeta();
 
-        tomeMeta.getPersistentDataContainer().set(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER, numberOfQuests);
+        tomeMeta.getPersistentDataContainer().set(AbstractTome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER, numberOfQuests);
 
         tome.setItemMeta(tomeMeta);
 
@@ -121,9 +119,9 @@ public class WoodTome extends Tome{
 
             tomeMeta = tome.getItemMeta();
 
-            tomeMeta.getPersistentDataContainer().set(Tome.getQuestTypeKey(i), PersistentDataType.STRING, questType.getQuestName());
+            tomeMeta.getPersistentDataContainer().set(AbstractTome.getQuestTypeKey(i), PersistentDataType.STRING, questType.getQuestName());
 
-            tomeMeta.getPersistentDataContainer().set(Tome.getTomeTypeKey(), PersistentDataType.STRING, this.tomeVariableName);
+            tomeMeta.getPersistentDataContainer().set(AbstractTome.getTomeTypeKey(), PersistentDataType.STRING, this.tomeVariableName);
 
             tome.setItemMeta(tomeMeta);
 
@@ -136,6 +134,7 @@ public class WoodTome extends Tome{
 
                 Mine mine = new Mine(i, material, 0, targetNumber);
                 tome = mine.applyQuest(tome);
+
             } else if (questType instanceof Slayer){
                 EntityType entityType = this.slayerTomeCustomization.getEntities().get(random.nextInt(this.slayerTomeCustomization.getEntities().size()));
                 int indexOfEntity = this.slayerTomeCustomization.getEntities().indexOf(entityType);
@@ -156,8 +155,8 @@ public class WoodTome extends Tome{
         tomeMeta.setDisplayName(this.tomeDisplayName);
 
 
-        tomeMeta.getPersistentDataContainer().set(Tome.getTomeKey(), PersistentDataType.INTEGER, 1);
-        tomeMeta.getPersistentDataContainer().set(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER, 0);
+        tomeMeta.getPersistentDataContainer().set(AbstractTome.getTomeKey(), PersistentDataType.INTEGER, 1);
+        tomeMeta.getPersistentDataContainer().set(AbstractTome.getTomeCompleteKey(), PersistentDataType.INTEGER, 0);
 
         tome.setItemMeta(tomeMeta);
 
@@ -174,4 +173,5 @@ public class WoodTome extends Tome{
         Random random = new Random();
         return this.availableQuests.get(random.nextInt(availableQuests.size()));
     }
+
 }

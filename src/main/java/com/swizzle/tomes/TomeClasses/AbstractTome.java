@@ -1,4 +1,4 @@
-package com.swizzle.tomes.TomeTypes;
+package com.swizzle.tomes.TomeClasses;
 
 import com.swizzle.tomes.QuestTypes.Fish;
 import com.swizzle.tomes.QuestTypes.IQuest;
@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Tome {
+public abstract class AbstractTome {
 
     //An array of all possible tomes
-    private static final ArrayList<Tome> tomes = new ArrayList<Tome>(Arrays.asList(new DirtTome(), new WoodTome(), new StoneTome()));
+    private static final ArrayList<AbstractTome> ABSTRACT_TOMES = new ArrayList<AbstractTome>(Arrays.asList(new DirtAbstractTome(), new WoodAbstractTome(), new StoneAbstractTome()));
 
     //Generic Tome Keys
     private static final NamespacedKey tomeKey = new NamespacedKey(Tomes.getInstance(), "Tome");
@@ -114,8 +114,8 @@ public abstract class Tome {
         return new NamespacedKey(Tomes.getInstance(), "QuestType"+index);
     }
 
-    public static ArrayList<Tome> getTomes() {
-        return tomes;
+    public static ArrayList<AbstractTome> getAbstractTomes() {
+        return ABSTRACT_TOMES;
     }
 
     public static NamespacedKey getTomeKey() {

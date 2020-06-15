@@ -1,6 +1,6 @@
 package com.swizzle.tomes.commands;
 
-import com.swizzle.tomes.TomeTypes.Tome;
+import com.swizzle.tomes.TomeClasses.AbstractTome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,14 +23,14 @@ public class TomesCommand implements CommandExecutor {
             if (args.length == 0){
                 Inventory gui = Bukkit.createInventory(player, 9, "Tomes");
 
-                ItemStack[] menuItems = new ItemStack[Tome.getTomes().size()];
+                ItemStack[] menuItems = new ItemStack[AbstractTome.getAbstractTomes().size()];
 
                 int counter = 0;
-                for (Tome tome : Tome.getTomes()){
+                for (AbstractTome abstractTome : AbstractTome.getAbstractTomes()){
                     ItemStack newTome = new ItemStack(Material.BOOK);
 
                     ItemMeta newTomeMeta = newTome.getItemMeta();
-                    newTomeMeta.setDisplayName(tome.getTomeDisplayName());
+                    newTomeMeta.setDisplayName(abstractTome.getTomeDisplayName());
 
                     ArrayList<String> newTomeLore = new ArrayList<>();
                     newTomeLore.add("Random Quests For Rewards!");

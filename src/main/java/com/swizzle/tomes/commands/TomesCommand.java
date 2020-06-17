@@ -1,8 +1,9 @@
 package com.swizzle.tomes.commands;
 
-import com.swizzle.tomes.TomeClasses.AbstractTome;
+import com.swizzle.tomes.TomeClasses.Tome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,14 +24,14 @@ public class TomesCommand implements CommandExecutor {
             if (args.length == 0){
                 Inventory gui = Bukkit.createInventory(player, 9, "Tomes");
 
-                ItemStack[] menuItems = new ItemStack[AbstractTome.getAbstractTomes().size()];
+                ItemStack[] menuItems = new ItemStack[Tomes.getTomes().size()];
 
                 int counter = 0;
-                for (AbstractTome abstractTome : AbstractTome.getAbstractTomes()){
+                for (Tome tome : Tomes.getTomes()){
                     ItemStack newTome = new ItemStack(Material.BOOK);
 
                     ItemMeta newTomeMeta = newTome.getItemMeta();
-                    newTomeMeta.setDisplayName(abstractTome.getTomeDisplayName());
+                    newTomeMeta.setDisplayName(tome.getTomeDisplayName());
 
                     ArrayList<String> newTomeLore = new ArrayList<>();
                     newTomeLore.add("Random Quests For Rewards!");
@@ -79,16 +80,16 @@ public class TomesCommand implements CommandExecutor {
                 String editTomesPermission = "tomes.editTomes";
                 if (player.hasPermission(editTomesPermission)) {
                     if (args[0].equalsIgnoreCase("rewards")) {
-                        if (args[1].equalsIgnoreCase("add")) {
+                        if (args[2].equalsIgnoreCase("add")) {
                             if (args[3] == null) {
-                                System.out.println("No weight argument.");
+                                sender.sendMessage(ChatColor.RED + "Please add in a weight");
                                 return false;
                             }
                             ItemStack newReward = player.getInventory().getItemInMainHand();
 
                             int index = 0;
 
-                            ConfigurationSection configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.items");
+                            ConfigurationSection configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[1] + ".rewards.items");
                             if (configSection == null) {
                                 System.out.println("Configuration Section Is Empty");
                                 index = 0;
@@ -103,9 +104,9 @@ public class TomesCommand implements CommandExecutor {
                                 }
                             }
 
-                            Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.items." + String.valueOf(index), newReward);
+                            Tomes.getInstance().getConfig().set("tomes." + args[1] + ".rewards.items." + String.valueOf(index), newReward);
 
-                            configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[2] + ".rewards.weights");
+                            configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[1] + ".rewards.weights");
                             if (configSection == null) {
                                 System.out.println("Configuration Section Is Empty");
                                 index = 0;
@@ -120,7 +121,7 @@ public class TomesCommand implements CommandExecutor {
                                 }
                             }
 
-                            Tomes.getInstance().getConfig().set("tomes." + args[2] + ".rewards.weights." + String.valueOf(index), args[3]);
+                            Tomes.getInstance().getConfig().set("tomes." + args[1] + ".rewards.weights." + String.valueOf(index), args[3]);
 
                             Tomes.getInstance().saveConfig();
                         }

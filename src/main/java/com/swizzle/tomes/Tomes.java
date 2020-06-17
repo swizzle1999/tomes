@@ -10,6 +10,7 @@ import com.swizzle.tomes.QuestTypes.Slayer;
 import com.swizzle.tomes.TomeClasses.Tome;
 import com.swizzle.tomes.commands.TomesCommand;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Array;
@@ -66,14 +67,33 @@ public final class Tomes extends JavaPlugin {
                 }
             }
 
+            //Fetch rewards of each tome
+            ConfigurationSection itemsSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + tomeKey + ".rewards.items");
+            ConfigurationSection weightsSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + tomeKey + ".rewards.weights");
+
+            ArrayList<ItemStack> rewardsArray = new ArrayList<ItemStack>();
+
+            if (itemsSection != null) {
+                for (String key : itemsSection.getKeys(false)) {
+                    ItemStack item = itemsSection.getItemStack(key);
+
+                    for (int i = 0; i < Integer.parseInt(weightsSection.getString(key)); i++) {
+                        rewardsArray.add(item);
+                    }
+                }
+            }
+
             ConfigurationSection tomeConfig = this.getConfig().getConfigurationSection("tomes." + tomeKey);
             tomes.add(new Tome(
                     tomeKey,
                     tomeConfig.getString("displayName"),
                     tomeConfig.getInt("numberOfQuests"),
                     tomeConfig.getInt("cost"),
-                    questsToAddToTome
+                    questsToAddToTome,
+                    rewardsArray
             ));
+
+
         }
 
         for (Tome tome : tomes){
@@ -90,6 +110,10 @@ public final class Tomes extends JavaPlugin {
         saveConfig();
 
 
+    }
+
+    public static ArrayList<Tome> getTomes() {
+        return tomes;
     }
 
     public static Tomes getInstance(){

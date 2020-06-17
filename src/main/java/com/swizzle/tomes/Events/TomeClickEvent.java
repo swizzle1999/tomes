@@ -1,6 +1,6 @@
 package com.swizzle.tomes.Events;
 
-import com.swizzle.tomes.TomeClasses.AbstractTome;
+import com.swizzle.tomes.TomeClasses.Tome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,11 +14,11 @@ public class TomeClickEvent implements Listener {
         if (e.getView().getTitle().equalsIgnoreCase("tomes")){
             if (e.getCurrentItem() != null && e.getCurrentItem().getItemMeta().getLore().get(0).equals("Random Quests For Rewards!")){
                 //Check which tome was clicked
-                for (AbstractTome abstractTome : AbstractTome.getAbstractTomes()){
-                    if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(abstractTome.getTomeDisplayName())){
-                        if (((Player)e.getWhoClicked()).getLevel() >= Tomes.getInstance().getConfig().getInt("tomes." + abstractTome.getTomeVariableName() + ".cost")){
-                            ((Player)e.getWhoClicked()).setLevel(((Player)e.getWhoClicked()).getLevel() - Tomes.getInstance().getConfig().getInt("tomes." + abstractTome.getTomeVariableName() + ".cost"));
-                            e.getWhoClicked().getInventory().addItem(abstractTome.giveBook());
+                for (Tome tome : Tomes.getTomes()){
+                    if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(tome.getTomeDisplayName())){
+                        if (((Player)e.getWhoClicked()).getLevel() >= Tomes.getInstance().getConfig().getInt("tomes." + tome.getTomeVariableName() + ".cost")){
+                            ((Player)e.getWhoClicked()).setLevel(((Player)e.getWhoClicked()).getLevel() - Tomes.getInstance().getConfig().getInt("tomes." + tome.getTomeVariableName() + ".cost"));
+                            e.getWhoClicked().getInventory().addItem(tome.giveBook());
                         } else {
                             e.getWhoClicked().sendMessage("Sorry, You do not have the required levels to purchase this tome");
                         }

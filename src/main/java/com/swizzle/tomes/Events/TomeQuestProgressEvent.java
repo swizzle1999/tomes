@@ -3,7 +3,7 @@ package com.swizzle.tomes.Events;
 import com.swizzle.tomes.QuestTypes.Fish;
 import com.swizzle.tomes.QuestTypes.Mine;
 import com.swizzle.tomes.QuestTypes.Slayer;
-import com.swizzle.tomes.TomeClasses.AbstractTome;
+import com.swizzle.tomes.TomeClasses.Tome;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -45,13 +45,13 @@ public class TomeQuestProgressEvent implements Listener {
                 //Itterate through all items
                 for (int i = 0; i < items.size(); i++){
                     //If the item IS a tome
-                    if (items.get(i).getItemMeta().getPersistentDataContainer().has(AbstractTome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().has(Tome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
                         //Get the number of quests on it
-                        int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
+                        int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
                         Slayer throwawayInstance = new Slayer(0, null, 0, 0);
                         //For loop to itterate through each possible quest index
                         for (int j = 0; j < numberOfQuestsOnTome; j++){
-                            if (items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                            if (items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
                                 tomes.add(items.get(i));
                                 questIndexs.add(j);
                             }
@@ -75,7 +75,7 @@ public class TomeQuestProgressEvent implements Listener {
 
                     System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
-                    AbstractTome.checkIfTomeIsComplete(item);
+                    Tome.checkIfTomeIsComplete(item);
                 }
                 //Entity Will Die
             }
@@ -103,13 +103,13 @@ public class TomeQuestProgressEvent implements Listener {
         //Itterate through all items
         for (int i = 0; i < items.size(); i++){
             //If the item IS a tome
-            if (items.get(i).getItemMeta().getPersistentDataContainer().has(AbstractTome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
+            if (items.get(i).getItemMeta().getPersistentDataContainer().has(Tome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
                 //Get the number of quests on it
-                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
+                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
                 Mine throwawayInstance = new Mine(0, null, 0, 0);
                 //For loop to itterate through each possible quest index
                 for (int j = 0; j < numberOfQuestsOnTome; j++){
-                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
                         tomes.add(items.get(i));
                         questIndexs.add(j);
                     }
@@ -144,7 +144,7 @@ public class TomeQuestProgressEvent implements Listener {
             //Just a debug statement
             //System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
-            AbstractTome.checkIfTomeIsComplete(item);
+            Tome.checkIfTomeIsComplete(item);
         }
         //Entity Will Die
     }
@@ -171,13 +171,13 @@ public class TomeQuestProgressEvent implements Listener {
         //Itterate through all items
         for (int i = 0; i < items.size(); i++){
             //If the item IS a tome
-            if (items.get(i).getItemMeta().getPersistentDataContainer().has(AbstractTome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
+            if (items.get(i).getItemMeta().getPersistentDataContainer().has(Tome.getTomeKey(), PersistentDataType.INTEGER) && items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 0){
                 //Get the number of quests on it
-                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
+                int numberOfQuestsOnTome = items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getTomeNumberOfQuestsKey(), PersistentDataType.INTEGER);
                 Fish throwawayInstance = new com.swizzle.tomes.QuestTypes.Fish(0, 0, 0);
                 //For loop to itterate through each possible quest index
                 for (int j = 0; j < numberOfQuestsOnTome; j++){
-                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(AbstractTome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
+                    if (items.get(i).getItemMeta().getPersistentDataContainer().get(Tome.getQuestTypeKey(j), PersistentDataType.STRING).equalsIgnoreCase(throwawayInstance.getQuestName())){
                         tomes.add(items.get(i));
                         questIndexs.add(j);
                     }
@@ -199,7 +199,7 @@ public class TomeQuestProgressEvent implements Listener {
                 fish.incrementCurrentFishCount(1, item);
             }
 
-            AbstractTome.checkIfTomeIsComplete(item);
+            Tome.checkIfTomeIsComplete(item);
         }
         //Entity Will Die
     }

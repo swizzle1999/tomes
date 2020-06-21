@@ -121,7 +121,7 @@ public class TomesCommand implements CommandExecutor {
                                 }
                             }
 
-                            Tomes.getInstance().getConfig().set("tomes." + args[1] + ".rewards.weights." + String.valueOf(index), args[3]);
+                            Tomes.getInstance().getConfig().set("tomes." + args[1] + ".rewards.weights." + String.valueOf(index), Integer.parseInt(args[3]));
 
                             Tomes.getInstance().saveConfig();
                         }

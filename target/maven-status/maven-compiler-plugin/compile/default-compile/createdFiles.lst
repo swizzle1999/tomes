@@ -1,7 +1,5 @@
 com\swizzle\tomes\commands\TomesCommand.class
 com\swizzle\tomes\Events\TomeQuestProgressEvent.class
-com\swizzle\tomes\TomeClasses\DirtAbstractTome.class
-com\swizzle\tomes\TomeClasses\StoneAbstractTome.class
 com\swizzle\tomes\Events\TomeRightClickEvent.class
 com\swizzle\tomes\Utils\RandomNumberBetweenBounds.class
 com\swizzle\tomes\QuestTypes\Mine.class
@@ -14,6 +12,3 @@ com\swizzle\tomes\QuestTypes\MineTomeCustomization.class
 com\swizzle\tomes\QuestTypes\IQuest.class
 com\swizzle\tomes\Events\TomeClickEvent.class
 com\swizzle\tomes\QuestTypes\SlayerTomeCustomization.class
-com\swizzle\tomes\TomeClasses\AbstractTome.class
-com\swizzle\tomes\TomeClasses\InstantiateTomes.class
-com\swizzle\tomes\TomeClasses\WoodAbstractTome.class

@@ -5,6 +5,7 @@ com\swizzle\tomes\Utils\RandomNumberBetweenBounds.class
 com\swizzle\tomes\QuestTypes\Mine.class
 com\swizzle\tomes\TomeClasses\Tome.class
 com\swizzle\tomes\QuestTypes\Slayer.class
+com\swizzle\tomes\GUI\PlayerPagesContainer.class
 com\swizzle\tomes\Tomes.class
 com\swizzle\tomes\QuestTypes\Fish.class
 com\swizzle\tomes\QuestTypes\FishTomeCustomization.class

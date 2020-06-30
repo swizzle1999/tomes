@@ -84,7 +84,6 @@ public class TomeClickEvent implements Listener {
                                 }
 
                                 for (int i = 0; i < allItems.size(); i++){
-                                    System.out.println(allItems.get(i).getData());
                                     ItemMeta itemMeta = allItems.get(i).getItemMeta();
 
                                     List<String> itemLore;

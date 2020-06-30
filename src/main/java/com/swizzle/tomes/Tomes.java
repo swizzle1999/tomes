@@ -58,6 +58,11 @@ public final class Tomes extends JavaPlugin {
 
         //Retrieve all tomes from the config file, instantiate them as a new tome with all of their values from the config file
         for (String tomeKey : this.getConfig().getConfigurationSection("tomes").getKeys(false)){
+
+            if (this.getConfig().getBoolean("tomes." + tomeKey + ".enabled") == false){
+                continue;
+            }
+
             ArrayList<IQuest> questsToAddToTome = new ArrayList<IQuest>();
             for (String questKey : this.getConfig().getConfigurationSection("tomes." + tomeKey + ".quests").getKeys(false)){
                 for (IQuest quest : quests){

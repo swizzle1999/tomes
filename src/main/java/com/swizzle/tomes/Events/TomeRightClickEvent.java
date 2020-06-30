@@ -23,14 +23,13 @@ public class TomeRightClickEvent implements Listener {
             if (currentItem.getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 1){
                 for (Tome tome : Tomes.getTomes()){
                     if (currentItem.getItemMeta().getPersistentDataContainer().get(Tome.getTomeTypeKey(), PersistentDataType.STRING).equalsIgnoreCase(tome.getTomeVariableName())){
-                        //System.out.println("its a " + tome.getTomeDisplayName());
                         List<ItemStack> rewardsArray = tome.getRewards();
 
                         Random random = new Random();
 
                         if (rewardsArray.size() > 0) {
                             e.getPlayer().getInventory().addItem(rewardsArray.get(random.nextInt(rewardsArray.size())));
-                            e.getPlayer().getInventory().removeItem(currentItem);
+                            //e.getPlayer().getInventory().removeItem(currentItem);
                         } else {
                             e.getPlayer().sendMessage(ChatColor.RED + "Sorry, the server owner forgot to add rewards to your tome. Complain to him!");
                         }

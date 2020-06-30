@@ -1,5 +1,6 @@
 package com.swizzle.tomes.commands;
 
+import com.swizzle.tomes.GUI.PlayerPagesContainer;
 import com.swizzle.tomes.TomeClasses.Tome;
 import com.swizzle.tomes.Tomes;
 import org.bukkit.Bukkit;
@@ -15,18 +16,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class TomesCommand implements CommandExecutor {
+
+    private HashMap<UUID, PlayerPagesContainer> playerPageMap = new HashMap<>();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player){
             Player player = ((Player) sender).getPlayer();
             if (args.length == 0){
-                Inventory gui = Bukkit.createInventory(player, 9, "Tomes");
+                Inventory gui = Bukkit.createInventory(player, 54, "Tomes");
 
                 ItemStack[] menuItems = new ItemStack[Tomes.getTomes().size()];
 
                 int counter = 0;
+                ArrayList<ItemStack> allItems = new ArrayList<>();
                 for (Tome tome : Tomes.getTomes()){
                     ItemStack newTome = new ItemStack(Material.BOOK);
 
@@ -35,10 +42,12 @@ public class TomesCommand implements CommandExecutor {
 
                     ArrayList<String> newTomeLore = new ArrayList<>();
                     newTomeLore.add("Random Quests For Rewards!");
+                    newTomeLore.add("Right Click To View Possible Rewards");
                     newTomeLore.add("Cost: " + tome.getCost() + " Levels");
 
                     newTomeMeta.setLore(newTomeLore);
                     newTome.setItemMeta(newTomeMeta);
+
 
                     menuItems[counter] = newTome;
 
@@ -92,7 +101,6 @@ public class TomesCommand implements CommandExecutor {
 
                             ConfigurationSection configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[1] + ".rewards.items");
                             if (configSection == null) {
-                                System.out.println("Configuration Section Is Empty");
                                 index = 0;
                             } else {
                                 for (String key : configSection.getKeys(false)) {
@@ -109,7 +117,6 @@ public class TomesCommand implements CommandExecutor {
 
                             configSection = Tomes.getInstance().getConfig().getConfigurationSection("tomes." + args[1] + ".rewards.weights");
                             if (configSection == null) {
-                                System.out.println("Configuration Section Is Empty");
                                 index = 0;
                             } else {
                                 for (String key : configSection.getKeys(false)) {

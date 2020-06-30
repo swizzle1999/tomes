@@ -18,7 +18,6 @@ public class PlayerPagesContainer {
     }
 
     public Inventory getCurrentInventory(){
-        System.out.println(pages.size());
         return pages.get(pageNumber);
     }
 

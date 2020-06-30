@@ -20,7 +20,7 @@ import java.util.*;
 
 public class TomeClickEvent implements Listener {
 
-    HashMap<UUID, PlayerPagesContainer> playerPageMap = new HashMap<>();
+    private HashMap<UUID, PlayerPagesContainer> playerPageMap = new HashMap<>();
 
     @EventHandler
     public void onTomeGUIClick(InventoryClickEvent e){
@@ -63,9 +63,16 @@ public class TomeClickEvent implements Listener {
                                 int totalWeightOfAllItems = 0;
                                 if (tomeRewardsItemsConfig != null && tomeRewardsWeightsConfig != null) {
                                     for (String key : tomeRewardsItemsConfig.getKeys(false)) {
-                                        ItemStack rewardItem = tomeRewardsItemsConfig.getItemStack(key);
+                                        ItemStack rewardItem = new ItemStack(tomeRewardsItemsConfig.getItemStack(key));
                                         ItemMeta rewardItemMeta = rewardItem.getItemMeta();
-                                        ArrayList<String> rewardItemLore = new ArrayList<String>();
+
+                                        List<String> rewardItemLore;
+                                        if (rewardItemMeta.getLore() == null){
+                                            rewardItemLore = new ArrayList<>();
+                                        } else {
+                                            rewardItemLore = rewardItemMeta.getLore();
+                                        }
+
 
                                         rewardItemMeta.setLore(rewardItemLore);
                                         rewardItem.setItemMeta(rewardItemMeta);

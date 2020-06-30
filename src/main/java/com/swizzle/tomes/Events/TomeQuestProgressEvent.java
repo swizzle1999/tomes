@@ -73,7 +73,7 @@ public class TomeQuestProgressEvent implements Listener {
                         slayer.incrementCurrentMobCount(1, item);
                     }
 
-                    System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
+                    //System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
                     Tome.checkIfTomeIsComplete(item);
                 }

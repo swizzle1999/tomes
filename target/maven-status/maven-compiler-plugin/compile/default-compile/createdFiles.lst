@@ -1,5 +1,6 @@
 com\swizzle\tomes\commands\TomesCommand.class
 com\swizzle\tomes\Events\TomeQuestProgressEvent.class
+com\swizzle\tomes\GUI\PlayerPageMaps.class
 com\swizzle\tomes\Events\TomeRightClickEvent.class
 com\swizzle\tomes\Utils\RandomNumberBetweenBounds.class
 com\swizzle\tomes\QuestTypes\Mine.class

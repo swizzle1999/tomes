@@ -1,5 +1,7 @@
 package com.swizzle.tomes.commands;
 
+import com.swizzle.tomes.Events.TomeClickEvent;
+import com.swizzle.tomes.GUI.PlayerPageMaps;
 import com.swizzle.tomes.GUI.PlayerPagesContainer;
 import com.swizzle.tomes.TomeClasses.Tome;
 import com.swizzle.tomes.Tomes;
@@ -11,29 +13,29 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class TomesCommand implements CommandExecutor {
-
-    private HashMap<UUID, PlayerPagesContainer> playerPageMap = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player){
             Player player = ((Player) sender).getPlayer();
+
+            //Command == /tomes
             if (args.length == 0){
-                Inventory gui = Bukkit.createInventory(player, 54, "Tomes");
 
-                ItemStack[] menuItems = new ItemStack[Tomes.getTomes().size()];
+                List<ItemStack> allItems = new ArrayList<ItemStack>();
 
-                int counter = 0;
-                ArrayList<ItemStack> allItems = new ArrayList<>();
                 for (Tome tome : Tomes.getTomes()){
                     ItemStack newTome = new ItemStack(Material.BOOK);
 
@@ -48,45 +50,87 @@ public class TomesCommand implements CommandExecutor {
                     newTomeMeta.setLore(newTomeLore);
                     newTome.setItemMeta(newTomeMeta);
 
-
-                    menuItems[counter] = newTome;
-
-                    counter += 1;
+                    allItems.add(newTome);
                 }
 
-//                ItemStack dirtTome = new ItemStack(Material.BOOK);
-//                ItemStack woodTome = new ItemStack(Material.BOOK);
-//                ItemStack stoneTome = new ItemStack(Material.BOOK);
-//
-//                //Dirt Meta And Lore
-//                ItemMeta dirtTomeMeta = dirtTome.getItemMeta();
-//                dirtTomeMeta.setDisplayName("Dirt Tome");
-//                ArrayList<String> dirtTomeLore = new ArrayList<>();
-//                dirtTomeLore.add("Random Quests For Rewards!");
-//                dirtTomeMeta.setLore(dirtTomeLore);
-//                dirtTome.setItemMeta(dirtTomeMeta);
-//
-//                //Wood Meta And Lore
-//                ItemMeta woodTomeMeta = woodTome.getItemMeta();
-//                woodTomeMeta.setDisplayName("Wood Tome");
-//                ArrayList<String> woodTomeLore = new ArrayList<>();
-//                woodTomeLore.add("Random Quests For Rewards!");
-//                woodTomeMeta.setLore(woodTomeLore);
-//                woodTome.setItemMeta(woodTomeMeta);
-//
-//                //Stone Meta And Lore
-//                ItemMeta stoneTomeMeta = stoneTome.getItemMeta();
-//                stoneTomeMeta.setDisplayName("Stone Tome");
-//                ArrayList<String> stoneTomeLore = new ArrayList<>();
-//                stoneTomeLore.add("Random Quests For Rewards!");
-//                stoneTomeMeta.setLore(stoneTomeLore);
-//                stoneTome.setItemMeta(stoneTomeMeta);
-//
-//                ItemStack[] menuItems = {dirtTome, woodTome, stoneTome};
-                gui.setContents(menuItems);
-                player.openInventory(gui);
-            } else {
+                Inventory gui = Bukkit.createInventory(player, 18, "Tomes");
 
+                //Left Arrow
+                ItemStack leftArrow = new ItemStack(Material.OAK_SIGN);
+                ItemMeta leftArrowMetaData = leftArrow.getItemMeta();
+                leftArrowMetaData.setDisplayName("Last Page");
+                leftArrow.setItemMeta(leftArrowMetaData);
+
+                gui.setItem(9, leftArrow);
+
+                //Right Arrow
+                ItemStack rightArrow = new ItemStack(Material.OAK_SIGN);
+                ItemMeta rightArrowMetaData = leftArrow.getItemMeta();
+                rightArrowMetaData.setDisplayName("Next Page");
+                rightArrow.setItemMeta(rightArrowMetaData);
+
+                gui.setItem(17, rightArrow);
+
+                //Red Glass
+                gui.setItem(10, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                gui.setItem(11, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                gui.setItem(12, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                gui.setItem(13, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                gui.setItem(14, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                gui.setItem(15, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                gui.setItem(16, new ItemStack(Material.RED_STAINED_GLASS_PANE));
+
+                //Finding out how many empty slots we have available in the inventory to fill
+                int numberOfEmptySlots = 0;
+                for (ItemStack slot : gui.getContents()){
+                    if (slot == null){
+                        numberOfEmptySlots += 1;
+                    }
+                }
+
+                //Finding out how many inventories (pages) are actually required based on the number of items we need to fit in and the number of empty slots we have per page
+                int numberOfRequiredInventories = (int) Math.ceil((float)allItems.size() / (float)numberOfEmptySlots);
+
+                //Formula breaks when there is no rewards so this should be a fix
+                if (numberOfRequiredInventories == 0){
+                    numberOfRequiredInventories = 1;
+                }
+
+                //A counter to keep track of what item we are adding from the list
+                int currentAllItemsIndex = 0;
+                //Creating an array list of inventories
+                ArrayList<Inventory> allInventories = new ArrayList<>();
+                //Creating all the inventories and filling them with items
+                for (int i = 0; i < numberOfRequiredInventories; i++){
+
+                    Inventory inventory = Bukkit.createInventory(player, 18, "Tomes - Page " + (i + 1));
+                    inventory.setContents(gui.getContents());
+
+                    for (int j = 0; j < numberOfEmptySlots; j++){
+                        if (currentAllItemsIndex > allItems.size() - 1){
+                            break;
+                        }
+
+                        if (allItems.size() > 0) {
+                            inventory.setItem(j, allItems.get(currentAllItemsIndex));
+                        }
+
+                        currentAllItemsIndex += 1;
+                    }
+
+                    allInventories.add(inventory);
+                }
+
+                //Creating a player pages container object and instantiating it with the player who it belongs to, the page number they are on and all of the inventories (pages)
+                PlayerPagesContainer playerPagesContainer = new PlayerPagesContainer(player.getUniqueId(), 0, allInventories);
+                PlayerPageMaps.updatePlayerTomesPageMap(player.getUniqueId(), playerPagesContainer);
+
+                //Opening the correct inventory
+                player.openInventory(playerPagesContainer.getCurrentInventory());
+
+            }
+            //Command == /tomes <something>
+            else {
                 String editTomesPermission = "tomes.editTomes";
                 if (player.hasPermission(editTomesPermission)) {
                     if (args[0].equalsIgnoreCase("rewards")) {

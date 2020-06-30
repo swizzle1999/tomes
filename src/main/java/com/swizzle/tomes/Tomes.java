@@ -100,19 +100,15 @@ public final class Tomes extends JavaPlugin {
 
 
         }
-
-//        for (Tome tome : tomes){
-//            System.out.println("Tome Name: " + tome.getTomeDisplayName());
-//            System.out.println("Number Of Quests: " + tome.getNumberOfQuests());
-//            System.out.println("Available Quests: " + tome.getAvailableQuests());
-//            System.out.println("=================================================");
-//        }
     }
 
     public void loadConfig(){
-        getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
-        saveConfig();
+        //With the two below lines uncommented it resulted in some strange behaviour where if there was a syntax error in the configuration it would delete ALL of the config and just copy the default again.
+        //This is obviously not good and could lead to a lot of lost data so until i figure out a solution it will stay like this
+        //This may actually be a good solution
+        //this.getConfig().options().copyDefaults(true);
+        this.saveDefaultConfig();
+        //this.saveConfig();
 
 
     }

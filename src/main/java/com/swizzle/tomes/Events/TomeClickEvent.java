@@ -1,5 +1,6 @@
 package com.swizzle.tomes.Events;
 
+import com.swizzle.tomes.GUI.PlayerPageMaps;
 import com.swizzle.tomes.GUI.PlayerPagesContainer;
 import com.swizzle.tomes.TomeClasses.Tome;
 import com.swizzle.tomes.Tomes;
@@ -19,8 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 public class TomeClickEvent implements Listener {
-
-    private HashMap<UUID, PlayerPagesContainer> playerPageMap = new HashMap<>();
 
     @EventHandler
     public void onTomeGUIClick(InventoryClickEvent e){
@@ -85,6 +84,7 @@ public class TomeClickEvent implements Listener {
                                 }
 
                                 for (int i = 0; i < allItems.size(); i++){
+                                    System.out.println(allItems.get(i).getData());
                                     ItemMeta itemMeta = allItems.get(i).getItemMeta();
 
                                     List<String> itemLore;
@@ -106,9 +106,7 @@ public class TomeClickEvent implements Listener {
                                     allItems.get(i).setItemMeta(itemMeta);
 
                                 }
-                                for (ItemStack item : allItems){
 
-                                }
 
                                 //Creating the place holder inventory with only the navigation in it
                                 //This allows us to find out how many open slots we have to fill with items
@@ -183,7 +181,7 @@ public class TomeClickEvent implements Listener {
 
                                 //Creating a player pages container object and instantiating it with the player who it belongs to, the page number they are on and all of the inventories (pages)
                                 PlayerPagesContainer playerPagesContainer = new PlayerPagesContainer(player.getUniqueId(), 0, allInventories);
-                                playerPageMap.put(playerPagesContainer.getPlayerID(), playerPagesContainer);
+                                PlayerPageMaps.updatePlayerRewardPageMap(playerPagesContainer.getPlayerID(), playerPagesContainer);
 
                                 //Opening the correct inventory
                                 e.getWhoClicked().openInventory(playerPagesContainer.getCurrentInventory());
@@ -195,21 +193,63 @@ public class TomeClickEvent implements Listener {
                 else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("next page")){
                     Player player = (Player) e.getWhoClicked();
 
-                    PlayerPagesContainer playerPagesContainer = playerPageMap.get(player.getUniqueId());
-                    playerPagesContainer.incrementPage();
+                    String menuType = checkWhichTypeOfMenuWasClicked(titleSplitBySpace);
+                    if (menuType != null){
+                        //If we are navigating through a rewards menu
+                        if (menuType.equalsIgnoreCase("rewards")){
+                            PlayerPagesContainer playerPagesContainer = PlayerPageMaps.getPlayerRewardPageMap().get(player.getUniqueId());
+                            playerPagesContainer.incrementPage();
 
-                    e.getWhoClicked().openInventory(playerPagesContainer.getCurrentInventory());
+                            e.getWhoClicked().openInventory(playerPagesContainer.getCurrentInventory());
+                        }
+                        //Navigating through the main tomes menu
+                        else if (menuType.equalsIgnoreCase("tomes")){
+                            PlayerPagesContainer playerPagesContainer = PlayerPageMaps.getPlayerTomesPageMap().get(player.getUniqueId());
+                            playerPagesContainer.incrementPage();
+
+                            e.getWhoClicked().openInventory(playerPagesContainer.getCurrentInventory());
+                        }
+                    }
+
                 } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("last page")){
                     Player player = (Player) e.getWhoClicked();
 
-                    PlayerPagesContainer playerPagesContainer = playerPageMap.get(player.getUniqueId());
-                    playerPagesContainer.decrementPage();
+                    String menuType = checkWhichTypeOfMenuWasClicked(titleSplitBySpace);
+                    if (menuType != null){
+                        //If we are navigating through a rewards menu
+                        if (menuType.equalsIgnoreCase("rewards")){
+                            PlayerPagesContainer playerPagesContainer = PlayerPageMaps.getPlayerRewardPageMap().get(player.getUniqueId());
+                            playerPagesContainer.decrementPage();
 
-                    e.getWhoClicked().openInventory(playerPagesContainer.getCurrentInventory());
+                            e.getWhoClicked().openInventory(playerPagesContainer.getCurrentInventory());
+                        }
+                        //Navigating through the main tomes menu
+                        else if (menuType.equalsIgnoreCase("tomes")){
+                            PlayerPagesContainer playerPagesContainer = PlayerPageMaps.getPlayerTomesPageMap().get(player.getUniqueId());
+                            playerPagesContainer.decrementPage();
+
+                            e.getWhoClicked().openInventory(playerPagesContainer.getCurrentInventory());
+                        }
+                    }
                 }
             }
         }
+    }
 
+    public String checkWhichTypeOfMenuWasClicked(List<String> titleSplitBySpace){
+        //yes this is also awfull but i dont know how to identify inventories without just checking the title.
 
+        String menuType = null;
+        for (String string : titleSplitBySpace){
+            if (string.equalsIgnoreCase("rewards")){
+                menuType = "rewards";
+                break;
+            } else if (string.equalsIgnoreCase("tomes")){
+                menuType = "tomes";
+                break;
+            }
+        }
+
+        return menuType;
     }
 }

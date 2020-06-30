@@ -5,4 +5,4 @@ api-version: 1.13
 authors: [swizzle1999]
 commands:
   tomes:
-    description: test
+    description: Tomes Plugin

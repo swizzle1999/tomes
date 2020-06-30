@@ -18,6 +18,7 @@ public class TomeRightClickEvent implements Listener {
     @EventHandler
     public void onRightClickTome(PlayerInteractEvent e){
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getItem().getItemMeta().getPersistentDataContainer().has(Tome.getTomeKey(), PersistentDataType.INTEGER)){
+            e.setCancelled(true);
             ItemStack currentItem = e.getItem();
             if (currentItem.getItemMeta().getPersistentDataContainer().get(Tome.getTomeCompleteKey(), PersistentDataType.INTEGER) == 1){
                 for (Tome tome : Tomes.getTomes()){
@@ -29,6 +30,7 @@ public class TomeRightClickEvent implements Listener {
 
                         if (rewardsArray.size() > 0) {
                             e.getPlayer().getInventory().addItem(rewardsArray.get(random.nextInt(rewardsArray.size())));
+                            e.getPlayer().getInventory().removeItem(currentItem);
                         } else {
                             e.getPlayer().sendMessage(ChatColor.RED + "Sorry, the server owner forgot to add rewards to your tome. Complain to him!");
                         }

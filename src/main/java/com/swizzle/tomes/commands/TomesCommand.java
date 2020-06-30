@@ -35,6 +35,7 @@ public class TomesCommand implements CommandExecutor {
 
                     ArrayList<String> newTomeLore = new ArrayList<>();
                     newTomeLore.add("Random Quests For Rewards!");
+                    newTomeLore.add("Cost: " + tome.getCost() + " Levels");
 
                     newTomeMeta.setLore(newTomeLore);
                     newTome.setItemMeta(newTomeMeta);

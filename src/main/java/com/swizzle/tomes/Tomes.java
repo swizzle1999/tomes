@@ -96,12 +96,12 @@ public final class Tomes extends JavaPlugin {
 
         }
 
-        for (Tome tome : tomes){
-            System.out.println("Tome Name: " + tome.getTomeDisplayName());
-            System.out.println("Number Of Quests: " + tome.getNumberOfQuests());
-            System.out.println("Available Quests: " + tome.getAvailableQuests());
-            System.out.println("=================================================");
-        }
+//        for (Tome tome : tomes){
+//            System.out.println("Tome Name: " + tome.getTomeDisplayName());
+//            System.out.println("Number Of Quests: " + tome.getNumberOfQuests());
+//            System.out.println("Available Quests: " + tome.getAvailableQuests());
+//            System.out.println("=================================================");
+//        }
     }
 
     public void loadConfig(){

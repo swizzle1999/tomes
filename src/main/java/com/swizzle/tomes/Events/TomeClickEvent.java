@@ -48,7 +48,7 @@ public class TomeClickEvent implements Listener {
                                     ((Player) e.getWhoClicked()).setLevel(((Player) e.getWhoClicked()).getLevel() - Tomes.getInstance().getConfig().getInt("tomes." + tome.getTomeVariableName() + ".cost"));
                                     e.getWhoClicked().getInventory().addItem(tome.giveBook());
                                 } else {
-                                    e.getWhoClicked().sendMessage(ChatColor.RED + "Sorry, You do not have the required levels to purchase this tome");
+                                    e.getWhoClicked().sendMessage(ChatColor.LIGHT_PURPLE + "[Tomes] " + "Sorry, You do not have the required levels to purchase this tome");
                                 }
                             } else if (e.getClick() == ClickType.RIGHT){
                                 Player player = (Player) e.getWhoClicked();

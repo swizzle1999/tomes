@@ -2,7 +2,9 @@ package com.swizzle.tomes.Events;
 
 import com.swizzle.tomes.TomeClasses.Tome;
 import com.swizzle.tomes.Tomes;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -28,8 +30,24 @@ public class TomeRightClickEvent implements Listener {
                         Random random = new Random();
 
                         if (rewardsArray.size() > 0) {
-                            e.getPlayer().getInventory().addItem(rewardsArray.get(random.nextInt(rewardsArray.size())));
+                            ItemStack reward = rewardsArray.get(random.nextInt(rewardsArray.size()));
+                            e.getPlayer().getInventory().addItem(reward);
                             e.getPlayer().getInventory().removeItem(currentItem);
+
+                            for(Player player : Bukkit.getOnlinePlayers()){
+                                String finalItemNameToDisplay = "";
+                                if (reward.getItemMeta().hasDisplayName()){
+                                    finalItemNameToDisplay = reward.getItemMeta().getDisplayName();
+                                } else {
+                                    String[] itemNameToDisplaySplit = reward.getType().name().split("_");
+
+                                    for (String string : itemNameToDisplaySplit){
+                                        string = string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+                                        finalItemNameToDisplay += (string + " ");
+                                    }
+                                }
+                                player.sendMessage(ChatColor.LIGHT_PURPLE + "[Tomes] " + e.getPlayer().getName() + " Received: x" + reward.getAmount() + " " + finalItemNameToDisplay);
+                            }
                         } else {
                             e.getPlayer().sendMessage(ChatColor.RED + "Sorry, the server owner forgot to add rewards to your tome. Complain to him!");
                         }

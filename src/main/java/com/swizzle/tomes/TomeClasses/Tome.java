@@ -3,10 +3,12 @@ package com.swizzle.tomes.TomeClasses;
 import com.swizzle.tomes.QuestTypes.*;
 import com.swizzle.tomes.Tomes;
 import com.swizzle.tomes.Utils.RandomNumberBetweenBounds;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -176,7 +178,7 @@ public class Tome{
         return new NamespacedKey(Tomes.getInstance(), "QuestType"+index);
     }
 
-    public static void checkIfTomeIsComplete(ItemStack tome){
+    public static void checkIfTomeIsComplete(Player player, ItemStack tome){
         ItemMeta tomeMeta = tome.getItemMeta();
 
         int numberOfQuests = tomeMeta.getPersistentDataContainer().get(tomeNumberOfQuestsKey, PersistentDataType.INTEGER);
@@ -228,6 +230,8 @@ public class Tome{
             tomeMeta.setLore(completedTombLore);
 
             tome.setItemMeta(tomeMeta);
+
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "[Tomes] Tome Complete!");
         }
     }
 

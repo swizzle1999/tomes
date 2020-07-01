@@ -75,7 +75,7 @@ public class TomeQuestProgressEvent implements Listener {
 
                     //System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
-                    Tome.checkIfTomeIsComplete(item);
+                    Tome.checkIfTomeIsComplete(player, item);
                 }
                 //Entity Will Die
             }
@@ -144,7 +144,7 @@ public class TomeQuestProgressEvent implements Listener {
             //Just a debug statement
             //System.out.println("Name: " + item.getItemMeta().getDisplayName() + " | Lore: " + item.getItemMeta().getLore().get(0));
 
-            Tome.checkIfTomeIsComplete(item);
+            Tome.checkIfTomeIsComplete(player, item);
         }
         //Entity Will Die
     }
@@ -199,7 +199,7 @@ public class TomeQuestProgressEvent implements Listener {
                 fish.incrementCurrentFishCount(1, item);
             }
 
-            Tome.checkIfTomeIsComplete(item);
+            Tome.checkIfTomeIsComplete(player, item);
         }
         //Entity Will Die
     }
